@@ -13,11 +13,11 @@ inherit skarnet useradd
 PACKAGE_BEFORE_PN = "${PN}-common"
 
 USERADD_PACKAGES = "${PN}-common"
-USERADD_PARAM_${PN}-common = "--system --home /run/uncaught-logs \
+USERADD_PARAM:${PN}-common = "--system --home /run/uncaught-logs \
                               --no-create-home --shell /bin/false \
                               --user-group catchlog"
 
-do_install_append_class-target () {
+do_install:append:class-target () {
 	s6-linux-init-maker \
 	  -u catchlog \
 	  -G "sleep 86400" \
@@ -43,19 +43,19 @@ split_s6_svscan () {
 }
 PACKAGEFUNCS += "split_s6_svscan"
 
-FILES_${PN}-common = "\
+FILES:${PN}-common = "\
     ${sysconfdir}/s6-linux-init/current/run-image/service/s6-svscan-log/fifo \
     ${sysconfdir}/s6-linux-init/current/run-image/service/s6-svscan-log/notification-fd \
     ${sysconfdir}/s6-linux-init/current/run-image/uncaught-logs \
 "
 
-RDEPENDS_${PN} += "\
+RDEPENDS:${PN} += "\
     execline \
     s6 \
 "
-RDEPENDS_${PN}_append_class-target = " ${PN}-common"
+RDEPENDS:${PN}:append:class-target = " ${PN}-common"
 
-RDEPENDS_${PN}-common += "\
+RDEPENDS:${PN}-common += "\
     execline \
     s6 \
 "

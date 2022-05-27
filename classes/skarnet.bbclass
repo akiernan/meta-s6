@@ -12,12 +12,12 @@ CONFIGUREOPTS = " \
     ${EXTRA_OECONF} \
     ${PACKAGECONFIG_CONFARGS} \
 "
-CONFIGUREOPTS_append_class-target = "\
+CONFIGUREOPTS:append:class-target = "\
     --with-sysdeps=${STAGING_LIBDIR}/skalibs/sysdeps \
     --with-lib=${STAGING_LIBDIR} \
     --with-dynlib=${STAGING_LIBDIR} \
 "
-CONFIGUREOPTS_append_class-native = "\
+CONFIGUREOPTS:append:class-native = "\
     --with-sysdeps=${STAGING_LIBDIR_NATIVE}/skalibs/sysdeps \
     --with-lib=${STAGING_LIBDIR_NATIVE} \
     --with-dynlib=${STAGING_LIBDIR_NATIVE} \

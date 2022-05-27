@@ -13,6 +13,6 @@ PACKAGECONFIG[ipv6] = "--enable-ipv6,--disable-ipv6"
 
 inherit skarnet
 
-FILES_${PN}-dev += "${libdir}/${BPN}/sysdeps"
+FILES:${PN}-dev += "${libdir}/${BPN}/sysdeps"
 
 BBCLASSEXTEND = "native"
