@@ -1,4 +1,5 @@
 SUMMARY = "execline - an interpreter-less scripting language"
+HOMEPAGE = "https://skarnet.org/software/execline/"
 
 LICENSE = "ISC"
 LIC_FILES_CHKSUM = "file://COPYING;md5=d096eb937732001e90b6c48fe07906c0"

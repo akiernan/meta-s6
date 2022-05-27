@@ -1,4 +1,5 @@
 SUMMARY = "s6-rc - a dependency-based init script management system"
+HOMEPAGE = "https://skarnet.org/software/s6-rc/"
 
 LICENSE = "ISC"
 LIC_FILES_CHKSUM = "file://COPYING;md5=c2becd2c2579701b65222d136ce1c138"

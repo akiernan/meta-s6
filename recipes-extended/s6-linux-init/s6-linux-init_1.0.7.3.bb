@@ -1,4 +1,5 @@
 SUMMARY = "s6-linux-init - tools to create an s6-based Linux init system"
+HOMEPAGE = "https://skarnet.org/software/s6-linux-init/"
 
 LICENSE = "ISC"
 LIC_FILES_CHKSUM = "file://COPYING;md5=c2becd2c2579701b65222d136ce1c138"

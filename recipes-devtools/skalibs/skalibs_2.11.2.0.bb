@@ -1,4 +1,5 @@
 SUMMARY = "skalibs is a C library used by all the skarnet.org packages"
+HOMEPAGE = "https://skarnet.org/software/skalibs/"
 
 LICENSE = "ISC"
 LIC_FILES_CHKSUM = "file://COPYING;md5=d096eb937732001e90b6c48fe07906c0"

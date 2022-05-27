@@ -1,4 +1,5 @@
 SUMMARY = "s6 - a process supervision suite"
+HOMEPAGE = "https://skarnet.org/software/s6/"
 
 LICENSE = "ISC"
 LIC_FILES_CHKSUM = "file://COPYING;md5=d096eb937732001e90b6c48fe07906c0"
