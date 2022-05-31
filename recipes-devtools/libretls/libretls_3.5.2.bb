@@ -9,4 +9,7 @@ SRC_URI[sha256sum] = "59ce9961cb1b1a2859cacb9863eeccc3bbeadf014840a1c61a0ac12ad3
 
 DEPENDS += "openssl"
 
-inherit autotools pkgconfig
+inherit autotools manpages pkgconfig
+
+PACKAGECONFIG ?= ""
+PACKAGECONFIG[manpages] = ""
