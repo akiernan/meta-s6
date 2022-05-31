@@ -4,37 +4,71 @@ HOMEPAGE = "https://skarnet.org/software/s6-linux-init/"
 LICENSE = "ISC"
 LIC_FILES_CHKSUM = "file://COPYING;md5=c2becd2c2579701b65222d136ce1c138"
 
-DEPENDS = "skalibs execline s6 s6-linux-init-native"
+DEPENDS = "skalibs execline qemu-native s6"
 
-SRC_URI = "https://skarnet.org/software/s6-linux-init/s6-linux-init-${PV}.tar.gz"
+SRC_URI = "https://skarnet.org/software/s6-linux-init/s6-linux-init-${PV}.tar.gz \
+           file://rcS-default \
+           file://rc \
+           file://rcS \
+           file://rc.init-sysvinit \
+           file://rc.shutdown-sysvinit \
+           file://rc.shutdown.final-sysvinit \
+           file://runlevel-sysvinit"
 SRC_URI[sha256sum] = "c906e57ebfe300dc17cfbfb9c254af59968762dfd162bfe064b4ce2bd695a776"
 
-inherit skarnet useradd
+inherit qemu skarnet update-alternatives useradd
 
 PACKAGE_BEFORE_PN = "${PN}-common"
 
 USERADD_PACKAGES = "${PN}-common"
 USERADD_PARAM:${PN}-common = "--system --home /run/uncaught-logs \
-                              --no-create-home --shell /bin/false \
+                              --no-create-home --shell /sbin/nologin \
                               --user-group catchlog"
 
-do_install:append:class-target () {
-	s6-linux-init-maker \
-	  -u catchlog \
-	  -G "sleep 86400" \
-	  -1 \
-	  -L \
-	  -p "/usr/bin:/usr/sbin:/bin:/sbin" \
-	  -m 022 \
-	  -s /run/kernel_env \
-	  -f "${D}${sysconfdir}/s6-linux-init/skel" \
-	  "${D}${sysconfdir}/s6-linux-init/current"
+S6_LINUX_INIT_EARLY_GETTY ?= ""
+S6_LINUX_INIT_EARLY_GETTY = "/sbin/getty -L 115200 console vt102"
 
-	# this is a horrible frig... we probably really want a cross s6-linux-init-maker
-	for f in $(find ${D}${sysconfdir}/s6-linux-init/current/bin ${D}${sysconfdir}/s6-linux-init/current/run-image/service -type f); do
-		sed -e "1s:#!.*/execlineb:#!${bindir}/execlineb:" -i ${f}
+EXTRA_S6_LINUX_INIT_MAKER ?= ""
+
+do_install:append:class-target () {
+	if [ -n "${S6_LINUX_INIT_SERVICE_MANAGER}" ]; then
+		case "${S6_LINUX_INIT_SERVICE_MANAGER}" in
+		sysvinit)
+			install -d ${D}${sysconfdir} ${D}${sysconfdir}/default ${D}${sysconfdir}/init.d
+			install -m 0755 ${WORKDIR}/rc ${D}${sysconfdir}/init.d
+			install -m 0755 ${WORKDIR}/rcS ${D}${sysconfdir}/init.d
+			sed -e \
+				's:#PSPLASH_TEXT#:${@bb.utils.contains("PACKAGECONFIG","psplash-text-updates","yes","no", d)}:g' \
+				${WORKDIR}/rcS-default > ${D}${sysconfdir}/default/rcS
+			chmod 0644 ${D}${sysconfdir}/default/rcS
+			;;
+		esac
+		install -d -m 0755 ${D}${sysconfdir}/s6-linux-init/skel
+		for i in rc.init rc.shutdown rc.shutdown.final runlevel; do
+			install -m 0755 ${WORKDIR}/$i-${S6_LINUX_INIT_SERVICE_MANAGER} ${D}${sysconfdir}/s6-linux-init/skel/$i
+		done
+	fi
+	${@qemu_wrapper_cmdline(d, '${STAGING_DIR_TARGET}', ['${D}${libdir}', '${STAGING_DIR_TARGET}/${base_libdir}', '${STAGING_DIR_TARGET}/${libdir}'])} \
+	${D}${bindir}/s6-linux-init-maker \
+		-c "${sysconfdir}/s6-linux-init/current" \
+		-u catchlog \
+		${@ '-G "${S6_LINUX_INIT_EARLY_GETTY}"' if d.getVar('S6_LINUX_INIT_EARLY_GETTY', True) else ''} \
+		-1 \
+		-L \
+		-p "${bindir}:${sbindir}${@bb.utils.contains('DISTRO_FEATURES','usrmerge','',':${base_bindir}:${base_sbindir}',d)}" \
+		-m 022 \
+		-D 5 \
+		-s /run/kernel_env \
+		-f "${D}${sysconfdir}/s6-linux-init/skel" \
+		"${D}${sysconfdir}/s6-linux-init/current"
+
+	chown -R root:root "${D}${sysconfdir}"
+	chown catchlog:catchlog "${D}${sysconfdir}/s6-linux-init/current/run-image/uncaught-logs"
+
+	install -d -m 0755 ${D}${base_sbindir}
+	for i in init halt poweroff reboot shutdown telinit; do
+		ln -sr ${D}${sysconfdir}/s6-linux-init/current/bin/$i ${D}${base_sbindir}/$i
 	done
-	ls -lR ${D}${sysconfdir}/s6-linux-init/current
 }
 
 split_s6_svscan () {
@@ -60,5 +94,16 @@ RDEPENDS:${PN}-common += "\
     execline \
     s6 \
 "
+
+ALTERNATIVE_PRIORITY = "300"
+
+ALTERNATIVE:${PN} = "init halt poweroff reboot shutdown telinit"
+
+ALTERNATIVE_LINK_NAME[init] = "${base_sbindir}/init"
+ALTERNATIVE_LINK_NAME[halt] = "${base_sbindir}/halt"
+ALTERNATIVE_LINK_NAME[poweroff] = "${base_sbindir}/poweroff"
+ALTERNATIVE_LINK_NAME[reboot] = "${base_sbindir}/reboot"
+ALTERNATIVE_LINK_NAME[shutdown] = "${base_sbindir}/shutdown"
+ALTERNATIVE_LINK_NAME[telinit] = "${base_sbindir}/telinit"
 
 BBCLASSEXTEND = "native"
