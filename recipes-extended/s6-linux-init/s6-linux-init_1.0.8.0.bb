@@ -2,7 +2,7 @@ SUMMARY = "s6-linux-init - tools to create an s6-based Linux init system"
 HOMEPAGE = "https://skarnet.org/software/s6-linux-init/"
 
 LICENSE = "ISC"
-LIC_FILES_CHKSUM = "file://COPYING;md5=c2becd2c2579701b65222d136ce1c138"
+LIC_FILES_CHKSUM = "file://COPYING;md5=2865f4a7bf0752acdc5a4e517c8b2d2e"
 
 DEPENDS = "skalibs execline qemu-native s6"
 
@@ -14,7 +14,7 @@ SRC_URI = "https://skarnet.org/software/s6-linux-init/s6-linux-init-${PV}.tar.gz
            file://rc.shutdown-sysvinit \
            file://rc.shutdown.final-sysvinit \
            file://runlevel-sysvinit"
-SRC_URI[sha256sum] = "c906e57ebfe300dc17cfbfb9c254af59968762dfd162bfe064b4ce2bd695a776"
+SRC_URI[sha256sum] = "92055a7964cf66604066ad964a2c2392ee7c5e64821be03146c1341e0d8c3dc6"
 
 inherit qemu skarnet update-alternatives useradd
 
