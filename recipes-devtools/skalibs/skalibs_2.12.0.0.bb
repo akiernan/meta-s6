@@ -2,10 +2,10 @@ SUMMARY = "skalibs is a C library used by all the skarnet.org packages"
 HOMEPAGE = "https://skarnet.org/software/skalibs/"
 
 LICENSE = "ISC"
-LIC_FILES_CHKSUM = "file://COPYING;md5=d096eb937732001e90b6c48fe07906c0"
+LIC_FILES_CHKSUM = "file://COPYING;md5=41280dbee09dab174bbebae98f1fdb47"
 
 SRC_URI = "https://skarnet.org/software/skalibs/skalibs-${PV}.tar.gz"
-SRC_URI[sha256sum] = "649cf3236fe3103f45366b6196b1bcd0457c9c17ca86f2b80007696a2baa7b77"
+SRC_URI[sha256sum] = "e6d724b4c628f093df75c98f1274d8bd6c0ecdb09cc6816d3268bacb58647f30"
 
 EXTRA_OECONF = "--with-sysdep-devurandom=yes"
 
