@@ -13,7 +13,11 @@ SRC_URI = "https://skarnet.org/software/s6-linux-init/s6-linux-init-${PV}.tar.gz
            file://rc.init-sysvinit \
            file://rc.shutdown-sysvinit \
            file://rc.shutdown.final-sysvinit \
-           file://runlevel-sysvinit"
+           file://runlevel-sysvinit \
+           file://rc.init-s6-rc \
+           file://rc.shutdown-s6-rc \
+           file://rc.shutdown.final-s6-rc \
+           file://runlevel-s6-rc"
 SRC_URI[sha256sum] = "92055a7964cf66604066ad964a2c2392ee7c5e64821be03146c1341e0d8c3dc6"
 
 inherit qemu skarnet update-alternatives useradd
@@ -41,6 +45,8 @@ do_install:append:class-target () {
 				's:#PSPLASH_TEXT#:${@bb.utils.contains("PACKAGECONFIG","psplash-text-updates","yes","no", d)}:g' \
 				${WORKDIR}/rcS-default > ${D}${sysconfdir}/default/rcS
 			chmod 0644 ${D}${sysconfdir}/default/rcS
+			;;
+		s6-rc)
 			;;
 		esac
 		install -d -m 0755 ${D}${sysconfdir}/s6-linux-init/skel
@@ -87,6 +93,8 @@ FILES:${PN}-common = "\
 RDEPENDS:${PN} += "\
     execline \
     s6 \
+    ${@ 'initscripts' if d.getVar("S6_LINUX_INIT_SERVICE_MANAGER") == "sysvinit" else ''} \
+    ${@ 's6-rc' if d.getVar("S6_LINUX_INIT_SERVICE_MANAGER") == "s6-rc" else ''} \
 "
 RDEPENDS:${PN}:append:class-target = " ${PN}-common"
 
