@@ -59,7 +59,6 @@ do_install:append:class-target () {
 		-c "${sysconfdir}/s6-linux-init/current" \
 		-u catchlog \
 		${@ '-G "${S6_LINUX_INIT_EARLY_GETTY}"' if d.getVar('S6_LINUX_INIT_EARLY_GETTY', True) else ''} \
-		-1 \
 		-L \
 		-p "${bindir}:${sbindir}${@bb.utils.contains('DISTRO_FEATURES','usrmerge','',':${base_bindir}:${base_sbindir}',d)}" \
 		-m 022 \
