@@ -30,7 +30,6 @@ USERADD_PARAM:${PN}-common = "--system --home /run/uncaught-logs \
                               --user-group catchlog"
 
 S6_LINUX_INIT_EARLY_GETTY ?= ""
-S6_LINUX_INIT_EARLY_GETTY = "/sbin/getty -L 115200 console vt102"
 
 EXTRA_S6_LINUX_INIT_MAKER ?= ""
 
