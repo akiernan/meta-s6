@@ -18,4 +18,4 @@
 ### also remove the K11reboot link from /etc/rc6.d to prevent
 ### sysv-rc from rebooting prematurely - because sysvinit does
 ### not properly separate state changes from system init/shutdown.
-exec /etc/init.d/rc 6
+exec /etc/s6-linux-init/current/scripts/runlevel 6
