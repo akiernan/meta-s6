@@ -64,6 +64,7 @@ do_install:append:class-target () {
 		-D 5 \
 		-s /run/kernel_env \
 		-f "${D}${sysconfdir}/s6-linux-init/skel" \
+		${EXTRA_S6_LINUX_INIT_MAKER} \
 		"${D}${sysconfdir}/s6-linux-init/current"
 
 	chown -R root:root "${D}${sysconfdir}"
