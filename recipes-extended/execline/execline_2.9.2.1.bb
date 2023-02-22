@@ -7,7 +7,7 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=34f73ee8aab2e0ca56980313bfd7a7bb"
 DEPENDS = "skalibs"
 
 SRC_URI = "https://skarnet.org/software/execline/execline-${PV}.tar.gz"
-SRC_URI[sha256sum] = "b5d68e021fa0c4679089d265110a6c81f4ecc141067bf686dccb4bfd061c0404"
+SRC_URI[sha256sum] = "dbccdd95bcee4b33d4d4cb7544ab92903ba2e2764165ddc8f395b67755b20405"
 
 inherit skarnet
 
