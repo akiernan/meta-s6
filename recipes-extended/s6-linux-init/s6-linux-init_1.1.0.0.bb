@@ -18,7 +18,7 @@ SRC_URI = "https://skarnet.org/software/s6-linux-init/s6-linux-init-${PV}.tar.gz
            file://rc.shutdown-s6-rc \
            file://rc.shutdown.final-s6-rc \
            file://runlevel-s6-rc"
-SRC_URI[sha256sum] = "29d0631194501902448eed0c46840d60d80eb3bb97afc330b4d11561448fc7cc"
+SRC_URI[sha256sum] = "06cd444c80016ffa430c49a2a122b7f3a345bb930d4921596278b298943ae45c"
 
 inherit qemu skarnet update-alternatives useradd
 
