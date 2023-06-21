@@ -9,6 +9,9 @@ DEPENDS = "skalibs"
 SRC_URI = "https://skarnet.org/software/execline/execline-${PV}.tar.gz"
 SRC_URI[sha256sum] = "c8027fa70922d117cdee8cc20d277e38d03fd960e6d136d8cec32603d4ec238d"
 
+PACKAGECONFIG ?= "multicall"
+PACKAGECONFIG[multicall] = "--enable-multicall,--disable-multicall"
+
 inherit skarnet
 
 BBCLASSEXTEND = "native"
