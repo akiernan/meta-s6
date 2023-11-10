@@ -5,7 +5,7 @@ LICENSE = "ISC"
 LIC_FILES_CHKSUM = "file://COPYING;md5=34f73ee8aab2e0ca56980313bfd7a7bb"
 
 SRC_URI = "https://skarnet.org/software/skalibs/skalibs-${PV}.tar.gz"
-SRC_URI[sha256sum] = "a745fd34cf84bec74398effa1b6f4c39c55736733939b126038e52b2d5dcc1d2"
+SRC_URI[sha256sum] = "18d316b5660b59f4171a3853e3aa3abf8cafe7b328fe4be394833d6abc646909"
 
 EXTRA_OECONF = "--with-sysdep-devurandom=yes --with-sysdep-posixspawnearlyreturn=no"
 
