@@ -5,9 +5,9 @@ LICENSE = "ISC"
 LIC_FILES_CHKSUM = "file://COPYING;md5=34f73ee8aab2e0ca56980313bfd7a7bb"
 
 SRC_URI = "https://skarnet.org/software/skalibs/skalibs-${PV}.tar.gz"
-SRC_URI[sha256sum] = "b272a1ab799f7fac44b9b4fb5ace78a9616b2fe4882159754b8088c4d8199e33"
+SRC_URI[sha256sum] = "a745fd34cf84bec74398effa1b6f4c39c55736733939b126038e52b2d5dcc1d2"
 
-EXTRA_OECONF = "--with-sysdep-devurandom=yes"
+EXTRA_OECONF = "--with-sysdep-devurandom=yes --with-sysdep-posixspawnearlyreturn=no"
 
 PACKAGECONFIG ?= "${@bb.utils.filter('DISTRO_FEATURES', 'ipv6', d)}"
 PACKAGECONFIG[ipv6] = "--enable-ipv6,--disable-ipv6"
