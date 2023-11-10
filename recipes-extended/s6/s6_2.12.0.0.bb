@@ -7,7 +7,7 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=34f73ee8aab2e0ca56980313bfd7a7bb"
 DEPENDS = "skalibs"
 
 SRC_URI = "https://skarnet.org/software/s6/s6-${PV}.tar.gz"
-SRC_URI[sha256sum] = "7c16138ad2f0ffbe0ed2ae8dd0cecada9f7c787edd33a69084d219110693df74"
+SRC_URI[sha256sum] = "9818c3a9e218192406270f41d342bedb7a19f19de005bab3c62b40093033ef6c"
 
 PACKAGECONFIG ?= "execline"
 PACKAGECONFIG[execline] = "--enable-execline,--disable-execline,execline"
