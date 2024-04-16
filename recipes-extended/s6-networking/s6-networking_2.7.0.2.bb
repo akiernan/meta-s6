@@ -2,12 +2,12 @@ SUMMARY = "s6-networking - small network and client-server tools"
 HOMEPAGE = "https://skarnet.org/software/s6-networking/"
 
 LICENSE = "ISC"
-LIC_FILES_CHKSUM = "file://COPYING;md5=34f73ee8aab2e0ca56980313bfd7a7bb"
+LIC_FILES_CHKSUM = "file://COPYING;md5=c92b5c6593e97d6cc9bcb4892128e2b8"
 
 DEPENDS = "skalibs s6 s6-dns"
 
 SRC_URI = "https://skarnet.org/software/s6-networking/s6-networking-${PV}.tar.gz"
-SRC_URI[sha256sum] = "dfa4964d4f1bdae9ab5fc4508769fd6fefc33a527d5153a3777c6b046eeea564"
+SRC_URI[sha256sum] = "c33c6f1b2be16f89a21af946cfd06242a12f98184c898b755ddb24338671ceb1"
 
 PACKAGECONFIG ?= "execline openssl"
 PACKAGECONFIG[bearssl] = "--enable-ssl=bearssl,,bearssl"
