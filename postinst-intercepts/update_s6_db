@@ -1,0 +1,13 @@
+#!/bin/sh
+
+set -e
+
+# We can't use s6-rc-native here to compile the service database as that sets paths based on the
+# native world. Ideally we'd use s6-rc-cross, only we've not managed to make that build. Given
+# we have s6-rc-compile in the image (though technically we don't need it) we drop into qemu to
+# build the database.
+
+PSEUDO_UNLOAD=1 ${binprefix}qemuwrapper -L $D \
+    $D${bindir}/s6-rc-compile $D${sysconfdir}/s6-rc/compiled-initial $D${sysconfdir}/s6-rc/source
+chown -R root:root $D${sysconfdir}/s6-rc/compiled-initial
+ln -sf compiled-initial $D${sysconfdir}/s6-rc/compiled
