@@ -57,8 +57,7 @@ do_install:append:class-target () {
 	${D}${bindir}/s6-linux-init-maker \
 		-c "${sysconfdir}/s6-linux-init/current" \
 		-u catchlog \
-		${@ '-G "${S6_LINUX_INIT_EARLY_GETTY}"' if d.getVar('S6_LINUX_INIT_EARLY_GETTY', True) else ''} \
-		-L \
+		${@ "-G '${S6_LINUX_INIT_EARLY_GETTY}'" if d.getVar('S6_LINUX_INIT_EARLY_GETTY', True) else ''} \
 		-p "${bindir}:${sbindir}${@bb.utils.contains('DISTRO_FEATURES','usrmerge','',':${base_bindir}:${base_sbindir}',d)}" \
 		-m 022 \
 		-D 5 \
@@ -92,8 +91,8 @@ FILES:${PN}-common = "\
 RDEPENDS:${PN} += "\
     execline \
     s6 \
-    ${@ 'initscripts' if d.getVar("S6_LINUX_INIT_SERVICE_MANAGER") == "sysvinit" else ''} \
-    ${@ 's6-rc' if d.getVar("S6_LINUX_INIT_SERVICE_MANAGER") == "s6-rc" else ''} \
+    ${@ 'initscripts' if d.getVar('S6_LINUX_INIT_SERVICE_MANAGER') == 'sysvinit' else ''} \
+    ${@ 's6-rc' if d.getVar('S6_LINUX_INIT_SERVICE_MANAGER') == 's6-rc' else ''} \
 "
 RDEPENDS:${PN}:append:class-target = " ${PN}-common"
 
