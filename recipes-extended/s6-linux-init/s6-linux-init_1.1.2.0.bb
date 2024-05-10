@@ -38,11 +38,11 @@ do_install:append:class-target () {
 		case "${S6_LINUX_INIT_SERVICE_MANAGER}" in
 		sysvinit)
 			install -d ${D}${sysconfdir} ${D}${sysconfdir}/default ${D}${sysconfdir}/init.d
-			install -m 0755 ${WORKDIR}/rc ${D}${sysconfdir}/init.d
-			install -m 0755 ${WORKDIR}/rcS ${D}${sysconfdir}/init.d
+			install -m 0755 ${UNPACKDIR}/rc ${D}${sysconfdir}/init.d
+			install -m 0755 ${UNPACKDIR}/rcS ${D}${sysconfdir}/init.d
 			sed -e \
 				's:#PSPLASH_TEXT#:${@bb.utils.contains("PACKAGECONFIG","psplash-text-updates","yes","no", d)}:g' \
-				${WORKDIR}/rcS-default > ${D}${sysconfdir}/default/rcS
+				${UNPACKDIR}/rcS-default > ${D}${sysconfdir}/default/rcS
 			chmod 0644 ${D}${sysconfdir}/default/rcS
 			;;
 		s6-rc)
@@ -50,7 +50,7 @@ do_install:append:class-target () {
 		esac
 		install -d -m 0755 ${D}${sysconfdir}/s6-linux-init/skel
 		for i in rc.init rc.shutdown rc.shutdown.final runlevel; do
-			install -m 0755 ${WORKDIR}/$i-${S6_LINUX_INIT_SERVICE_MANAGER} ${D}${sysconfdir}/s6-linux-init/skel/$i
+			install -m 0755 ${UNPACKDIR}/$i-${S6_LINUX_INIT_SERVICE_MANAGER} ${D}${sysconfdir}/s6-linux-init/skel/$i
 		done
 	fi
 	${@qemu_wrapper_cmdline(d, '${STAGING_DIR_TARGET}', ['${D}${libdir}', '${STAGING_DIR_TARGET}/${base_libdir}', '${STAGING_DIR_TARGET}/${libdir}'])} \
