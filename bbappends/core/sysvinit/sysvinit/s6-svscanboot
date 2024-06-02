@@ -1,0 +1,15 @@
+#!/usr/bin/execlineb -P
+
+define RUNIMG /etc/s6-linux-init/current/run-image
+export PATH /usr/bin:/usr/sbin:/bin:/sbin
+umask 022
+redirfd -r 0 /dev/null
+if
+{
+  elglob -0 files ${RUNIMG}/*
+  cp -a $files /run/
+}
+redirfd -w 3 /run/s6_ready
+redirfd -wnb 1 /run/service/s6-svscan-log/fifo
+fdmove -c 2 1
+s6-svscan -d3 /run/service

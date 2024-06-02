@@ -1,0 +1,4 @@
+#!/usr/bin/execlineb -P
+redirfd -rnb 0 fifo
+s6-setuidgid catchlog
+s6-log -bd3 -- t /run/uncaught-logs
