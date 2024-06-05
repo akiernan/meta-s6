@@ -30,8 +30,9 @@ USERADD_PARAM:${PN}-common = "--system --home /run/uncaught-logs \
                               --user-group catchlog"
 
 S6_LINUX_INIT_EARLY_GETTY ?= ""
+S6_LINUX_INIT_INITDEFAULT ?= "${@ '5' if d.getVar('S6_LINUX_INIT_SERVICE_MANAGER') == "sysvinit" else ''}"
 
-EXTRA_S6_LINUX_INIT_MAKER ?= ""
+EXTRA_S6_LINUX_INIT_MAKER ??= "-s /run/kernel_env"
 
 do_install:append:class-target () {
 	if [ -n "${S6_LINUX_INIT_SERVICE_MANAGER}" ]; then
@@ -59,9 +60,7 @@ do_install:append:class-target () {
 		-u catchlog \
 		${@ "-G '${S6_LINUX_INIT_EARLY_GETTY}'" if d.getVar('S6_LINUX_INIT_EARLY_GETTY', True) else ''} \
 		-p "${bindir}:${sbindir}${@bb.utils.contains('DISTRO_FEATURES','usrmerge','',':${base_bindir}:${base_sbindir}',d)}" \
-		-m 022 \
-		-D 5 \
-		-s /run/kernel_env \
+		${@ "-D '${S6_LINUX_INIT_INITDEFAULT}'" if d.getVar('S6_LINUX_INIT_INITDEFAULT', True) else ''} \
 		-f "${D}${sysconfdir}/s6-linux-init/skel" \
 		${EXTRA_S6_LINUX_INIT_MAKER} \
 		"${D}${sysconfdir}/s6-linux-init/current"
