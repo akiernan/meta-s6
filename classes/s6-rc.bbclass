@@ -65,7 +65,7 @@ python s6_rc_populate_packages () {
         d.setVar(postrm_pkg, postrm)
 }
 
-PACKAGESPLITFUNCS_append = " s6_rc_populate_packages"
+PACKAGESPLITFUNCS += " s6_rc_populate_packages"
 
 python s6_rc_explode_dirfiles () {
     from glob import glob
