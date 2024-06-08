@@ -1,4 +1,4 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
 do_install:append() {
 	if [ "${VIRTUAL-RUNTIME_init_manager}" = "sysvinit" ]; then
