@@ -9,10 +9,10 @@ SRC_URI += "\
 
 do_install:append() {
 	if [ "${VIRTUAL-RUNTIME_init_manager}" = "sysvinit" ]; then
-		install -Dm0755 ${WORKDIR}/s6-svscanboot ${D}${sbindir}/s6-svscanboot
-		install -Dm0755 ${WORKDIR}/crash ${D}${sysconfdir}/s6-linux-init/current/run-image/service/.s6-svscan/crash
-		install -Dm0755 ${WORKDIR}/finish ${D}${sysconfdir}/s6-linux-init/current/run-image/service/.s6-svscan/finish
-		install -Dm0755 ${WORKDIR}/run ${D}${sysconfdir}/s6-linux-init/current/run-image/service/s6-svscan-log/run
+		install -Dm0755 ${UNPACKDIR}/s6-svscanboot ${D}${sbindir}/s6-svscanboot
+		install -Dm0755 ${UNPACKDIR}/crash ${D}${sysconfdir}/s6-linux-init/current/run-image/service/.s6-svscan/crash
+		install -Dm0755 ${UNPACKDIR}/finish ${D}${sysconfdir}/s6-linux-init/current/run-image/service/.s6-svscan/finish
+		install -Dm0755 ${UNPACKDIR}/run ${D}${sysconfdir}/s6-linux-init/current/run-image/service/s6-svscan-log/run
 	fi
 }
 
