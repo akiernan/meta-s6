@@ -16,10 +16,14 @@ do_install:append() {
 	fi
 }
 
-RDEPENDS_${PN} += "\
+PACKAGE_BEFORE_PN = "${PN}-rc"
+FILES:${PN}-rc = "${sysconfdir}/init.d/rc ${sysconfdir}/init.d/rcS"
+
+RDEPENDS:${PN} += "\
+    ${PN}-rc \
     ${@ 's6-linux-init-common execline' if d.getVar('VIRTUAL-RUNTIME_init_manager') == 'sysvinit' else '' } \
 "
 
-FILES_${PN} += "\
-    ${sbindir}/s6-svscanboot \
+FILES:${PN} += "\
+    ${@ '${sbindir}/s6-svscanboot' if d.getVar('VIRTUAL-RUNTIME_init_manager') == 'sysvinit' else '' } \
 "
