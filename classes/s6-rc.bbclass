@@ -45,7 +45,7 @@ python s6_rc_populate_packages () {
             continue
 
         mlprefix = d.getVar('MLPREFIX') or ""
-        rdepends_pkg = 'RDEPENDS_{pkg}'.format(**locals())
+        rdepends_pkg = 'RDEPENDS:{pkg}'.format(**locals())
         rdepends = d.getVar(rdepends_pkg) or ""
         rdepends += ' {mlprefix}s6-rc {mlprefix}execline {mlprefix}s6-portable-utils {mlprefix}s6-rc-base'.format(**locals())
         d.setVar(rdepends_pkg, rdepends)
@@ -57,7 +57,7 @@ python s6_rc_populate_packages () {
         postinst += d.getVar('s6_rc_source_postinst')
         d.setVar(postinst_pkg, postinst)
 
-        postrm_pkg = 'pkg_postrm_{pkg}'.format(**locals())
+        postrm_pkg = 'pkg_postrm:{pkg}'.format(**locals())
         postrm = d.getVar(postrm_pkg)
         if not postrm:
             postrm = '#!/bin/sh\n'
