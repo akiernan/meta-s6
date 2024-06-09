@@ -8,10 +8,10 @@ DEPENDS = "skalibs execline qemu-native s6"
 
 SRC_URI = "https://skarnet.org/software/s6-linux-init/s6-linux-init-${PV}.tar.gz \
            file://rcS-default \
-           file://rc.init-sysvinit \
-           file://rc.shutdown-sysvinit \
-           file://rc.shutdown.final-sysvinit \
-           file://runlevel-sysvinit \
+           file://rc.init-sysvinit-rc \
+           file://rc.shutdown-sysvinit-rc \
+           file://rc.shutdown.final-sysvinit-rc \
+           file://runlevel-sysvinit-rc \
            file://rc.init-s6-rc \
            file://rc.shutdown-s6-rc \
            file://rc.shutdown.final-s6-rc \
@@ -28,14 +28,14 @@ USERADD_PARAM:${PN}-common = "--system --home /run/uncaught-logs \
                               --user-group catchlog"
 
 S6_LINUX_INIT_EARLY_GETTY ??= ""
-S6_LINUX_INIT_INITDEFAULT ??= "${@ '5' if d.getVar('S6_LINUX_INIT_SERVICE_MANAGER') == "sysvinit" else ''}"
+S6_LINUX_INIT_INITDEFAULT ??= "${@ '5' if d.getVar('S6_LINUX_INIT_SERVICE_MANAGER') == "sysvinit-rc" else ''}"
 
 EXTRA_S6_LINUX_INIT_MAKER ??= "-s /run/kernel_env"
 
 do_install:append:class-target () {
 	if [ -n "${S6_LINUX_INIT_SERVICE_MANAGER}" ]; then
 		case "${S6_LINUX_INIT_SERVICE_MANAGER}" in
-		sysvinit)
+		sysvinit-rc)
 			install -d ${D}${sysconfdir} ${D}${sysconfdir}/default ${D}${sysconfdir}/init.d
 			sed -e \
 				's:#PSPLASH_TEXT#:${@bb.utils.contains("PACKAGECONFIG","psplash-text-updates","yes","no", d)}:g' \
@@ -86,7 +86,7 @@ FILES:${PN}-common = "\
 RDEPENDS:${PN} += "\
     execline \
     s6 \
-    ${@ 'initscripts sysvinit-rc' if d.getVar('S6_LINUX_INIT_SERVICE_MANAGER') == 'sysvinit' else ''} \
+    ${@ 'initscripts sysvinit-rc' if d.getVar('S6_LINUX_INIT_SERVICE_MANAGER') == 'sysvinit-rc' else ''} \
     ${@ 's6-rc' if d.getVar('S6_LINUX_INIT_SERVICE_MANAGER') == 's6-rc' else ''} \
 "
 RDEPENDS:${PN}:append:class-target = " ${PN}-common"
