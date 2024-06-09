@@ -29,8 +29,8 @@ USERADD_PARAM:${PN}-common = "--system --home /run/uncaught-logs \
                               --no-create-home --shell /sbin/nologin \
                               --user-group catchlog"
 
-S6_LINUX_INIT_EARLY_GETTY ?= ""
-S6_LINUX_INIT_INITDEFAULT ?= "${@ '5' if d.getVar('S6_LINUX_INIT_SERVICE_MANAGER') == "sysvinit" else ''}"
+S6_LINUX_INIT_EARLY_GETTY ??= ""
+S6_LINUX_INIT_INITDEFAULT ??= "${@ '5' if d.getVar('S6_LINUX_INIT_SERVICE_MANAGER') == "sysvinit" else ''}"
 
 EXTRA_S6_LINUX_INIT_MAKER ??= "-s /run/kernel_env"
 
