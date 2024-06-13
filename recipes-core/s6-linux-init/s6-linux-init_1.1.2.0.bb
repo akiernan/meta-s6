@@ -86,10 +86,12 @@ FILES:${PN}-common = "\
 RDEPENDS:${PN} += "\
     execline \
     s6 \
+"
+RDEPENDS:${PN}:append:class-target = "\
+    ${PN}-common \
     ${@ 'initscripts sysvinit-rc' if d.getVar('S6_LINUX_INIT_SERVICE_MANAGER') == 'sysvinit-rc' else ''} \
     ${@ 's6-rc' if d.getVar('S6_LINUX_INIT_SERVICE_MANAGER') == 's6-rc' else ''} \
 "
-RDEPENDS:${PN}:append:class-target = " ${PN}-common"
 
 RDEPENDS:${PN}-common += "\
     execline \
