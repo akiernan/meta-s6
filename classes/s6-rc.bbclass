@@ -1,7 +1,7 @@
 # /OR/ s6_rc_sourcedir = "${nonarch_base_libdir}/s6-rc/source"
 s6_rc_sourcedir = "${sysconfdir}/s6-rc/source"
 
-DEPENDS += "s6-rc execline s6-portable-utils s6-rc-base"
+DEPENDS += "s6-rc execline s6-portable-utils"
 
 PACKAGE_WRITE_DEPS += "qemu-native"
 
@@ -47,7 +47,7 @@ python s6_rc_populate_packages () {
         mlprefix = d.getVar('MLPREFIX') or ""
         rdepends_pkg = 'RDEPENDS:{pkg}'.format(**locals())
         rdepends = d.getVar(rdepends_pkg) or ""
-        rdepends += ' {mlprefix}s6-rc {mlprefix}execline {mlprefix}s6-portable-utils {mlprefix}s6-rc-base'.format(**locals())
+        rdepends += ' {mlprefix}s6-rc {mlprefix}execline {mlprefix}s6-portable-utils'.format(**locals())
         d.setVar(rdepends_pkg, rdepends)
 
         postinst_pkg = 'pkg_postinst_{pkg}'.format(**locals())
