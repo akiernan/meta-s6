@@ -34,17 +34,11 @@ EXTRA_S6_LINUX_INIT_MAKER ??= "-s /run/kernel_env"
 
 do_install:append:class-target () {
 	if [ -n "${S6_LINUX_INIT_SERVICE_MANAGER}" ]; then
-		case "${S6_LINUX_INIT_SERVICE_MANAGER}" in
-		sysvinit-rc)
-			install -d ${D}${sysconfdir} ${D}${sysconfdir}/default ${D}${sysconfdir}/init.d
-			sed -e \
-				's:#PSPLASH_TEXT#:${@bb.utils.contains("PACKAGECONFIG","psplash-text-updates","yes","no", d)}:g' \
-				${UNPACKDIR}/rcS-default > ${D}${sysconfdir}/default/rcS
-			chmod 0644 ${D}${sysconfdir}/default/rcS
-			;;
-		s6-rc)
-			;;
-		esac
+		install -d ${D}${sysconfdir} ${D}${sysconfdir}/default ${D}${sysconfdir}/init.d
+		sed -e \
+			's:#PSPLASH_TEXT#:${@bb.utils.contains("PACKAGECONFIG","psplash-text-updates","yes","no", d)}:g' \
+			${UNPACKDIR}/rcS-default > ${D}${sysconfdir}/default/rcS
+		chmod 0644 ${D}${sysconfdir}/default/rcS
 		install -d -m 0755 ${D}${sysconfdir}/s6-linux-init/skel
 		for i in rc.init rc.shutdown rc.shutdown.final runlevel; do
 			install -m 0755 ${UNPACKDIR}/$i-${S6_LINUX_INIT_SERVICE_MANAGER} ${D}${sysconfdir}/s6-linux-init/skel/$i
@@ -90,7 +84,7 @@ RDEPENDS:${PN} += "\
 RDEPENDS:${PN}:append:class-target = "\
     ${PN}-common \
     ${@ 'initscripts sysvinit-rc' if d.getVar('S6_LINUX_INIT_SERVICE_MANAGER') == 'sysvinit-rc' else ''} \
-    ${@ 's6-rc' if d.getVar('S6_LINUX_INIT_SERVICE_MANAGER') == 's6-rc' else ''} \
+    ${@ 's6-rc initscripts-populate-volatile' if d.getVar('S6_LINUX_INIT_SERVICE_MANAGER') == 's6-rc' else ''} \
 "
 
 RDEPENDS:${PN}-common += "\
