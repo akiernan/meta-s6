@@ -11,6 +11,7 @@ SRC_URI[sha256sum] = "bf0614cf52957cb0af04c7b02d10ebd6c5e023c9d46335cbf75484eed3
 
 PACKAGECONFIG ?= "execline"
 PACKAGECONFIG[execline] = "--enable-execline,--disable-execline,execline"
+PACKAGECONFIG[nsss] = "--enable-nsss,--disable-nsss,nsss"
 
 inherit skarnet
 
