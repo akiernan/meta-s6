@@ -20,6 +20,10 @@ SRC_URI[sha256sum] = "971e014a229b7f47a128721dd714f8d493c4ac644e465197b6599a9640
 
 inherit qemu skarnet update-alternatives useradd
 
+PACKAGECONFIG ?= ""
+PACKAGECONFIG[nsss] = "--enable-nsss,--disable-nsss,nsss"
+PACKAGECONFIG[utmps] = "--enable-utmps,--disable-utmps,utmps"
+
 EXTRA_OECONF += "--skeldir=${sysconfdir}/${BPN}/skel"
 
 PACKAGE_BEFORE_PN = "${PN}-common"
