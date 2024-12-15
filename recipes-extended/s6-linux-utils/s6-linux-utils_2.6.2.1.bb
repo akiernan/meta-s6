@@ -9,6 +9,12 @@ DEPENDS = "skalibs"
 SRC_URI = "https://skarnet.org/software/s6-linux-utils/s6-linux-utils-${PV}.tar.gz"
 SRC_URI[sha256sum] = "915f167294d36ca9240a62281c7299b5ad5d558b8d45d888761135749d9fd234"
 
+EXTRA_OECONF = "--with-seed-dir=${localstatedir}/lib/rngseed"
+
+PACKAGECONFIG ?= "multicall"
+PACKAGECONFIG[multicall] = "--enable-multicall,--disable-multicall"
+PACKAGECONFIG[nsss] = "--enable-nsss,--disable-nsss,nsss"
+
 inherit skarnet
 
 BBCLASSEXTEND = "native"
