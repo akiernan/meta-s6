@@ -50,7 +50,7 @@ python s6_rc_populate_packages () {
         rdepends += ' {mlprefix}s6-rc {mlprefix}execline {mlprefix}s6-portable-utils'.format(**locals())
         d.setVar(rdepends_pkg, rdepends)
 
-        postinst_pkg = 'pkg_postinst_{pkg}'.format(**locals())
+        postinst_pkg = 'pkg_postinst:{pkg}'.format(**locals())
         postinst = d.getVar(postinst_pkg)
         if not postinst:
             postinst = '#!/bin/sh\n'
