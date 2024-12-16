@@ -73,11 +73,11 @@ python s6_rc_explode_dirfiles () {
     for dir in ('contents', 'dependencies'):
         for d in glob("{}/*/{}".format(s6_rc_sourcedir, dir)):
             dirname = "{}.d".format(d)
+            os.makedirs(dirname, exist_ok=True)
             with open(d) as f:
                 for line in f:
                     dep = line.strip()
                     if dep:
-                        os.makedirs(dirname, exist_ok=True)
                         with open(oe.path.join(dirname, os.path.basename(dep)), "w"):
                             pass
             os.remove(d)
