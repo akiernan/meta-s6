@@ -6,4 +6,4 @@ do_install:append() {
 	fi
 }
 
-RDEPENDS:${PN} += "${@ 's6 execline' if d.getVar('VIRTUAL-RUNTIME_init_manager') == 'sysvinit' else '' }"
+RDEPENDS:${PN} += "${@ 's6 s6-rc execline' if d.getVar('VIRTUAL-RUNTIME_init_manager') == 'sysvinit' else '' }"
