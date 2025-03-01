@@ -109,4 +109,6 @@ ALTERNATIVE_LINK_NAME[reboot] = "${base_sbindir}/reboot"
 ALTERNATIVE_LINK_NAME[shutdown] = "${base_sbindir}/shutdown"
 ALTERNATIVE_LINK_NAME[telinit] = "${base_sbindir}/telinit"
 
+PACKAGE_ARCH = "${MACHINE_ARCH}"
+
 BBCLASSEXTEND = "native"
