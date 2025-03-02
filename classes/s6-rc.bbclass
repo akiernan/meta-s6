@@ -1,3 +1,5 @@
+inherit python3native
+
 # /OR/ s6_rc_sourcedir = "${nonarch_base_libdir}/s6-rc/source"
 s6_rc_sourcedir = "${sysconfdir}/s6-rc/source"
 
@@ -67,6 +69,45 @@ python s6_rc_populate_packages () {
 
 PACKAGESPLITFUNCS += " s6_rc_populate_packages"
 
+s6_rc_generate_services () {
+	nativepython3 - <<EOF
+import tomllib
+
+from collections.abc import MutableMapping
+from pathlib import Path
+
+def flatten(dictionary, parent_key=list()):
+    items = []
+    for key, value in dictionary.items():
+        new_key = parent_key + [key]
+        if isinstance(value, MutableMapping):
+            items.extend(flatten(value, new_key))
+        else:
+            items.append((new_key, value))
+    return items
+
+for path in Path("${D}${s6_rc_sourcedir}").glob("*.toml"):
+    with path.open(mode="rb") as f:
+        data = tomllib.load(f)
+
+        for k, v in flatten(data):
+            p = Path("${D}${s6_rc_sourcedir}").joinpath(*k)
+            p.parent.mkdir(parents=True, exist_ok=True)
+            if isinstance(v, bool):
+                p.open(mode="w").close()
+            else:
+                if isinstance(v, list):
+                    v = "\n".join(v)
+                elif isinstance(v, int):
+                    v = f"{v}"
+                if not v.endswith("\n"):
+                    v += "\n"
+                p.write_text(v)
+
+    path.unlink()
+EOF
+}
+
 python s6_rc_explode_dirfiles () {
     from glob import glob
     s6_rc_sourcedir = oe.path.join(d.getVar("D"), d.getVar('s6_rc_sourcedir'))
@@ -82,4 +123,4 @@ python s6_rc_explode_dirfiles () {
                             pass
             os.remove(d)
 }
-do_install[postfuncs] += "s6_rc_explode_dirfiles"
+do_install[postfuncs] += "s6_rc_generate_services s6_rc_explode_dirfiles"
