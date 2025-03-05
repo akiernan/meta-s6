@@ -1,0 +1,46 @@
+# SPDX-License-Identifier: MIT
+
+[dbus-srv]
+type = "longrun"
+dependencies = [
+    "populate-volatile",
+]
+notification-fd = 3
+producer-for = "dbus-log"
+run = """
+#!/usr/bin/execlineb -P
+
+fdmove -c 2 1
+if { dbus-uuidgen --ensure }
+if { s6-mkdir -p /run/dbus }
+if
+{
+  s6-envuidgid messagebus
+  s6-chown -U /run/dbus
+}
+dbus-daemon --system --nofork --nosyslog --nopidfile --print-pid=3
+"""
+
+[dbus-log]
+type = "longrun"
+consumer-for = ["dbus-srv"]
+dependencies = [
+    "populate-volatile",
+]
+notification-fd = 3
+pipeline-name = "dbus-pipeline"
+run = """
+#!/usr/bin/execlineb -P
+
+s6-envuidgid root
+s6-envuidgid -g adm
+s6-applyuidgid
+exec -c
+s6-log -d3 -- t s131072 n1 /var/log/dbus
+"""
+
+[ok-local]
+type = "bundle"
+contents = [
+    "dbus-pipeline",
+]
