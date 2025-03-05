@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: MIT
+
+[rngseed]
+dependencies = [
+    "00",
+    "mount-disks"
+]
+up = """
+if -t { eltest -r /var/lib/rngseed/seed }
+rngseed -r
+"""
+type = "oneshot"
+down = """
+if { s6-mkdir -m 0700 -p /var/lib/rngseed }
+rngseed -w
+"""

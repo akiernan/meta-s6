@@ -1,0 +1,9 @@
+# SPDX-License-Identifier: MIT
+
+[populate-volatile]
+dependencies = [
+    "mount-proc",
+    "mount-disks",
+]
+type = "oneshot"
+up = "/etc/init.d/populate-volatile.sh"

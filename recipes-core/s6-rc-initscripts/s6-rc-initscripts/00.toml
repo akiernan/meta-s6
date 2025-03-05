@@ -1,0 +1,10 @@
+# SPDX-License-Identifier: MIT
+
+[00]
+type = "oneshot"
+up = """
+if { s6-echo \"init-stage2 starting.\" }
+if -t { eltest -r /etc/hostname }
+backtick -E HOSTNAME { redirfd -r 0 /etc/hostname s6-cat }
+s6-hostname $HOSTNAME
+"""

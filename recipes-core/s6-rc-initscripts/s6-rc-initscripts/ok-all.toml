@@ -1,0 +1,10 @@
+# SPDX-License-Identifier: MIT
+
+[ok-all]
+contents = [
+    "ok-init",
+    "ok-local",
+    "ok-lan",
+    "ok-wan",
+]
+type = "bundle"

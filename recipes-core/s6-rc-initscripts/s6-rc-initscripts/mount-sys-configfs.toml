@@ -1,0 +1,13 @@
+# SPDX-License-Identifier: MIT
+
+[mount-sys-configfs]
+dependencies = [
+    "mount-sys",
+]
+down = "s6-umount /sys/kernel/config"
+type = "oneshot"
+up = """
+if -t { eltest -d /sys/kernel/config }
+if -t { redirfd -r 0 /proc/filesystems s6-grep -qF configfs }
+s6-mount -wt configfs config /sys/kernel/config
+"""

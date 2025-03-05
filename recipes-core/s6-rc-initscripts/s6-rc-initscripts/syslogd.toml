@@ -1,0 +1,31 @@
+# SPDX-License-Identifier: MIT
+
+[syslogd-srv]
+dependencies = [
+]
+notification-fd = 3
+producer-for = "syslogd-log"
+run = """
+#!/usr/bin/execlineb -P
+
+s6-envuidgid nobody
+s6-socklog -d3 -U -t3000
+"""
+type = "longrun"
+
+[syslogd-log]
+consumer-for = [
+    "syslogd-srv",
+]
+dependencies = [
+    "mount-disks",
+    "populate-volatile",
+]
+notification-fd = 3
+pipeline-name = "syslogd"
+run = """
+#!/usr/bin/execlineb -P
+exec -c
+s6-log -d3 -- t s1000000 n20 /var/log/syslogd
+"""
+type = "longrun"

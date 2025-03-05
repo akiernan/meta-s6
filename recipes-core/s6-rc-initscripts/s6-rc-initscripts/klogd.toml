@@ -1,0 +1,32 @@
+# SPDX-License-Identifier: MIT
+
+[klogd-srv]
+dependencies = [
+    "mount-proc",
+]
+producer-for = "klogd-log"
+run = """
+#!/usr/bin/execlineb -P
+fdmove -c 2 1
+redirfd -r 0 /proc/kmsg
+exec -c
+ucspilogd
+"""
+type = "longrun"
+
+[klogd-log]
+consumer-for = [
+    "klogd-srv",
+]
+dependencies = [
+    "mount-disks",
+    "populate-volatile",
+]
+notification-fd = 3
+pipeline-name = "klogd"
+run = """
+#!/usr/bin/execlineb -P
+exec -c
+s6-log -d3 -- t s1000000 n20 /var/log/klogd
+"""
+type = "longrun"
