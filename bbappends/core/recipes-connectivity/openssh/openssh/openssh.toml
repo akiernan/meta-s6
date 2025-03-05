@@ -1,0 +1,42 @@
+# SPDX-License-Identifier: MIT
+
+[openssh-srv]
+type = "longrun"
+dependencies = [
+    "ok-local",
+]
+producer-for = "openssh-log"
+run = """
+#!/usr/bin/execlineb -P
+
+fdmove -c 2 1
+if { ssh-keygen -A }
+exec -c
+/usr/sbin/sshd -D -e
+"""
+
+[openssh-log]
+type = "longrun"
+consumer-for = [
+    "openssh-srv",
+]
+dependencies = [
+    "populate-volatile",
+]
+notification-fd = 3
+pipeline-name = "openssh-pipeline"
+run = """
+#!/usr/bin/execlineb -P
+
+s6-envuidgid root
+s6-envuidgid -g adm
+s6-applyuidgid
+exec -c
+s6-log -d3 -- t s131072 n1 /var/log/openssh
+"""
+
+[ok-lan]
+type = "bundle"
+contents = [
+    "openssh-pipeline",
+]
