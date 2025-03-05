@@ -1,0 +1,64 @@
+# SPDX-License-Identifier: MIT
+
+[udev-srv]
+dependencies = [
+    "mount-dev",
+    "mount-proc",
+    "mount-sys",
+    "init-static-devnodes",
+]
+run = """
+#!/usr/bin/execlineb -P
+
+exec -c
+udevd
+"""
+type = "longrun"
+
+[udev-settle]
+dependencies = [
+    "udev-srv",
+    "udev-trigger",
+]
+type = "oneshot"
+up = "udevadm settle"
+
+[udev-trigger]
+dependencies = [
+    "udev-srv",
+]
+type = "oneshot"
+up = """
+if { udevadm trigger --action=add --type=subsystems }
+udevadm trigger --action=add --type=devices
+"""
+
+[init-static-devnodes]
+dependencies = [
+#    "init-sysctl",
+]
+type = "oneshot"
+up = """
+foreground
+{
+  pipeline { kmod static-nodes --format=devname }
+  pipeline { s6-cut -f1 -d\" \" }
+  forstdin -pd \"\\n\" -- mod
+  importas -iu mod mod
+  modprobe -q ${mod}
+}
+exit 0
+"""
+
+[init-dev]
+type = "bundle"
+contents = [
+    "udev-srv",
+]
+
+[ok-init]
+type = "bundle"
+contents = [
+    "init-dev",
+]
+
