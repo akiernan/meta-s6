@@ -1,0 +1,19 @@
+# SPDX-License-Identifier: MIT
+
+[connman-srv]
+type = "longrun"
+dependencies = [
+    "dbus-srv",
+    "udev-settle",
+]
+run = """\
+#!/usr/bin/execlineb -P
+
+connmand --nodaemon
+"""
+
+[ok-lan]
+type = "bundle"
+contents = [
+    "connman-srv",
+]
