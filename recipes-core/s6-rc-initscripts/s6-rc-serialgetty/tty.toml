@@ -3,20 +3,12 @@ type = "longrun"
 dependencies = [
     "init-dev",
 ]
+down-signal = "SIGHUP"
 run = """
 #!/usr/bin/execlineb -P
 
-backtick -E GETTY { readlink -f /sbin/getty }
-case -s -- $GETTY
-{
-  "*/busybox"
-  {
-    exec -c
-    $GETTY -L @SPEED@ @DEVICE@ @TERM@
-  }
-}
 exec -c
-s6-setsid $GETTY -L @SPEED@ @DEVICE@ @TERM@
+getty -L @SPEED@ @DEVICE@ @TERM@
 """
 
 [init-tty]
