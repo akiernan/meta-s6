@@ -3,7 +3,6 @@
 [ok-init]
 contents = [
     "klogd",
-    "mount-dev-pts",
     "mount-disks",
     "mount-sys-configfs",
     "mount-sys-debugfs",
