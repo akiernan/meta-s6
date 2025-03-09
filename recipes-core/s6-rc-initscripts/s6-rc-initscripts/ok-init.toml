@@ -4,8 +4,6 @@
 contents = [
     "klogd",
     "mount-disks",
-    "mount-sys-configfs",
-    "mount-sys-debugfs",
     "rngseed",
     "syslogd",
 ]

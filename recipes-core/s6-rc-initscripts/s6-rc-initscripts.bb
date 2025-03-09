@@ -8,12 +8,10 @@ SRC_URI = "\
     file://00.toml \
     file://default.toml \
     file://klogd.toml \
-    file://mount-dev-pts.toml \
-    file://mount-dev.toml \
     file://mount-disks.toml \
     file://mount-proc.toml \
-    file://mount-sys-configfs.toml \
-    file://mount-sys-debugfs.toml \
+    file://mount-sys-kernel-config.toml \
+    file://mount-sys-kernel-debug.toml \
     file://mount-sys.toml \
     file://ok-all.toml \
     file://ok-init.toml \
@@ -32,8 +30,8 @@ inherit s6-rc
 
 do_install:append() {
 	install -d -m 0755 ${D}${s6_rc_sourcedir}
-        install -m 0644 00.toml default.toml klogd.toml mount-dev-pts.toml mount-dev.toml mount-disks.toml \
-		mount-proc.toml mount-sys-configfs.toml mount-sys-debugfs.toml  mount-sys.toml ok-all.toml \
+        install -m 0644 00.toml default.toml klogd.toml mount-disks.toml mount-proc.toml \
+		mount-sys-kernel-config.toml mount-sys-kernel-debug.toml mount-sys.toml ok-all.toml \
 		ok-init.toml ok-lan.toml ok-local.toml ok-wan.toml populate-volatile.toml rngseed.toml \
 		syslogd.toml ${D}${s6_rc_sourcedir}
 }
