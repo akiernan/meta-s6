@@ -1,0 +1,13 @@
+# SPDX-License-Identifier: MIT
+
+[mount-sys-fs-fuse-connections]
+type = "oneshot"
+dependencies = [
+    "mount-sys",
+]
+down = "s6-umount /sys/fs/fuse/connections"
+up = """
+if -t { eltest -d /sys/fs/fuse/connections }
+if -t { modprobe -abq fuse }
+s6-mount -t fusectl -o nosuid,nodev,noexec fusectl /sys/fs/fuse/connections
+"""

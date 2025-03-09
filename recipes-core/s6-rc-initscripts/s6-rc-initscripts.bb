@@ -8,11 +8,17 @@ SRC_URI = "\
     file://00.toml \
     file://default.toml \
     file://klogd.toml \
+    file://mount-dev-hugepages.toml \
+    file://mount-dev-mqueue.toml \
     file://mount-disks.toml \
+    file://mount-proc-sys-fs-binfmt_misc.toml \
     file://mount-proc.toml \
+    file://mount-sys-fs-fuse-connections.toml \
     file://mount-sys-kernel-config.toml \
     file://mount-sys-kernel-debug.toml \
+    file://mount-sys-kernel-tracing.toml \
     file://mount-sys.toml \
+    file://mount-tmp.toml \
     file://ok-all.toml \
     file://ok-init.toml \
     file://ok-lan.toml \
@@ -30,10 +36,12 @@ inherit s6-rc
 
 do_install:append() {
 	install -d -m 0755 ${D}${s6_rc_sourcedir}
-        install -m 0644 00.toml default.toml klogd.toml mount-disks.toml mount-proc.toml \
-		mount-sys-kernel-config.toml mount-sys-kernel-debug.toml mount-sys.toml ok-all.toml \
-		ok-init.toml ok-lan.toml ok-local.toml ok-wan.toml populate-volatile.toml rngseed.toml \
-		syslogd.toml ${D}${s6_rc_sourcedir}
+	install -m 0644 00.toml default.toml klogd.toml mount-dev-hugepages.toml mount-dev-mqueue.toml \
+		mount-disks.toml mount-proc-sys-fs-binfmt_misc.toml mount-proc.toml \
+		mount-sys-fs-fuse-connections.toml mount-sys-kernel-config.toml mount-sys-kernel-debug.toml \
+		mount-sys-kernel-tracing.toml mount-sys.toml mount-tmp.toml ok-all.toml ok-init.toml \
+		ok-lan.toml ok-local.toml ok-wan.toml populate-volatile.toml rngseed.toml syslogd.toml \
+		${D}${s6_rc_sourcedir}
 }
 
 RDEPENDS:${PN} += "s6-linux-utils s6-portable-utils initscripts-populate-volatile s6-rc-serialgetty"

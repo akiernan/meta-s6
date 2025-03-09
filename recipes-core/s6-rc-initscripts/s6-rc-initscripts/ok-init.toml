@@ -2,8 +2,9 @@
 
 [ok-init]
 contents = [
-    "klogd",
+    "mount-tmp",
     "mount-disks",
+    "klogd",
     "rngseed",
     "syslogd",
 ]

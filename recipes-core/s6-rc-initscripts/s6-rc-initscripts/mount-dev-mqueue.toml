@@ -1,0 +1,13 @@
+# SPDX-License-Identifier: MIT
+
+[mount-dev-mqueue]
+type = "oneshot"
+dependencies = [
+    "mount-proc",
+]
+down = "s6-umount /dev/mqueue"
+up = """
+if -t { eltest -d /proc/sys/fs/mqueue }
+if { s6-mkdir -p /dev/mqueue }
+s6-mount -t mqueue -o nosuid,nodev,noexec mqueue /dev/mqueue
+"""

@@ -1,0 +1,10 @@
+# SPDX-License-Identifier: MIT
+
+[mount-dev-hugepages]
+type = "oneshot"
+down = "s6-umount /dev/hugepages"
+up = """
+if -t { eltest -d /sys/kernel/mm/hugepages }
+if { s6-mkdir -p /dev/hugepages }
+s6-mount -t hugetlbfs -o nosuid,nodev hugetlbfs /dev/hugepages
+"""

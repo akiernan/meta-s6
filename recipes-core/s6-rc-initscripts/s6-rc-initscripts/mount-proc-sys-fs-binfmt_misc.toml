@@ -1,0 +1,12 @@
+# SPDX-License-Identifier: MIT
+
+[mount-proc-sys-fs-binfmt_misc]
+type = "oneshot"
+dependencies = [
+    "mount-proc",
+    "ok-init",
+]
+down = "s6-umount /proc/sys/fs/binfmt_misc"
+up = """
+s6-mount -t binfmt_misc -o nosuid,nodev,noexec binfmt_misc /proc/sys/fs/binfmt_misc
+"""
