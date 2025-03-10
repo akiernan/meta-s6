@@ -4,7 +4,7 @@
 type = "longrun"
 dependencies = [
     "dbus-srv",
-    "udev-settle",
+    "udev-trigger",
     "wpa-supplicant-srv",
 ]
 run = """\
