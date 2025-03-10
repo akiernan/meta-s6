@@ -4,7 +4,6 @@
 type = "oneshot"
 dependencies = [
     "mount-proc",
-    "ok-init",
 ]
 down = "s6-umount /proc/sys/fs/binfmt_misc"
 up = """

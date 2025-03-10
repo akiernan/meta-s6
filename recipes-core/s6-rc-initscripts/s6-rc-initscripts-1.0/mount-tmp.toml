@@ -2,6 +2,9 @@
 
 [mount-tmp]
 type = "oneshot"
+dependencies = [
+    "00",
+]
 down = "s6-umount /tmp"
 up = """
 s6-mount -t tmpfs -o mode=1777,strictatime,nosuid,nodev,size=50%,nr_inodes=1m tmpfs /tmp
