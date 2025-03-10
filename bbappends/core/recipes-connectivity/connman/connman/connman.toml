@@ -10,7 +10,8 @@ dependencies = [
 run = """\
 #!/usr/bin/execlineb -P
 
-connmand --nodaemon
+fdmove -c 2 1
+connmand --nodaemon --noperror
 """
 
 [ok-lan]
