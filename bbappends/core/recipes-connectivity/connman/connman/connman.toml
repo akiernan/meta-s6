@@ -5,6 +5,7 @@ type = "longrun"
 dependencies = [
     "dbus-srv",
     "udev-settle",
+    "wpa-supplicant-srv",
 ]
 run = """\
 #!/usr/bin/execlineb -P
