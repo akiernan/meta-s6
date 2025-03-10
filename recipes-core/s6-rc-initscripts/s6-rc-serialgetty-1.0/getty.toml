@@ -2,6 +2,9 @@
 
 ["getty-@DEVICE@"]
 type = "longrun"
+dependencies = [
+    "00",
+]
 down-signal = "SIGHUP"
 run = """
 #!/usr/bin/execlineb -P
