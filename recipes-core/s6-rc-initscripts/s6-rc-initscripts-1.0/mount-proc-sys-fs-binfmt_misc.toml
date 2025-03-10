@@ -8,5 +8,6 @@ dependencies = [
 ]
 down = "s6-umount /proc/sys/fs/binfmt_misc"
 up = """
+if -t { eltest -d /proc/sys/fs/binfmt_misc }
 s6-mount -t binfmt_misc -o nosuid,nodev,noexec binfmt_misc /proc/sys/fs/binfmt_misc
 """
