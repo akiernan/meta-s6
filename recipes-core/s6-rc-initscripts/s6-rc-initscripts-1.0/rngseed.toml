@@ -3,7 +3,7 @@
 [rngseed]
 dependencies = [
     "00",
-    "mount-disks"
+    "init-disks"
 ]
 up = """
 if -t { eltest -r /var/lib/rngseed/seed }

@@ -19,7 +19,7 @@ consumer-for = [
     "klogd-srv",
 ]
 dependencies = [
-    "mount-disks",
+    "init-disks",
     "populate-volatile",
 ]
 notification-fd = 3

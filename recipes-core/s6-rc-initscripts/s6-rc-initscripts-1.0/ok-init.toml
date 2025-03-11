@@ -3,7 +3,8 @@
 [ok-init]
 contents = [
     "mount-tmp",
-    "mount-disks",
+    "init-disks",
+    "init-dev",
     "klogd",
     "rngseed",
     "syslogd",
