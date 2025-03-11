@@ -7,7 +7,7 @@ dependencies = [
 ]
 down = "s6-umount /sys/fs/fuse/connections"
 up = """
-if -t { eltest -d /sys/fs/fuse/connections }
-if -t { modprobe -abq fuse }
+if { modprobe -abq fuse }
+if { eltest -d /sys/fs/fuse/connections }
 s6-mount -t fusectl -o nosuid,nodev,noexec fusectl /sys/fs/fuse/connections
 """

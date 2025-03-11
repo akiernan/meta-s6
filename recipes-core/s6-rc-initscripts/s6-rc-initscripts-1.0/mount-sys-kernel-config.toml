@@ -7,7 +7,7 @@ dependencies = [
 ]
 down = "s6-umount /sys/kernel/config"
 up = """
-if -t { eltest -d /sys/kernel/config }
-if -t { modprobe -abq configfs }
+if { modprobe -abq configfs }
+if { eltest -d /sys/kernel/config }
 s6-mount -t configfs -o nosuid,nodev,noexec configfs /sys/kernel/config
 """
