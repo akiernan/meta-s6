@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: MIT
 
 [init-disks]
-contents = []
+contents = [
+    "mount-var-volatile",
+]
 type = "bundle"

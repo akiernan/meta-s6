@@ -8,12 +8,12 @@ SRC_URI = "\
     file://00.toml \
     file://default.toml \
     file://init-dev.toml \
+    file://init-disks.toml \
     file://init-tty.toml \
     file://klogd.toml \
     file://mount-dev-hugepages.toml \
     file://mount-dev-mqueue.toml \
     file://mount-dev-pts.toml \
-    file://init-disks.toml \
     file://mount-proc-sys-fs-binfmt_misc.toml \
     file://mount-proc.toml \
     file://mount-sys-fs-cgroup.toml \
@@ -24,6 +24,7 @@ SRC_URI = "\
     file://mount-sys-kernel-tracing.toml \
     file://mount-sys.toml \
     file://mount-tmp.toml \
+    file://mount-var-volatile.toml \
     file://ok-all.toml \
     file://ok-init.toml \
     file://ok-lan.toml \
@@ -41,14 +42,14 @@ inherit s6-rc
 
 do_install:append() {
 	install -d -m 0755 ${D}${s6_rc_sourcedir}
-	install -m 0644 00.toml default.toml init-dev.toml init-tty.toml klogd.toml  \
+	install -m 0644 00.toml default.toml init-dev.toml init-disks.toml init-tty.toml klogd.toml  \
 		mount-dev-hugepages.toml mount-dev-mqueue.toml mount-dev-pts.toml  \
-		init-disks.toml mount-proc-sys-fs-binfmt_misc.toml mount-proc.toml  \
-		mount-sys-fs-cgroup.toml mount-sys-fs-fuse-connections.toml  \
-		mount-sys-fs-pstore.toml mount-sys-kernel-config.toml  \
-		mount-sys-kernel-debug.toml mount-sys-kernel-tracing.toml mount-sys.toml  \
-		mount-tmp.toml ok-all.toml ok-init.toml ok-lan.toml ok-local.toml ok-wan.toml  \
-		populate-volatile.toml rngseed.toml syslogd.toml \
+		mount-proc-sys-fs-binfmt_misc.toml mount-proc.toml mount-sys-fs-cgroup.toml  \
+		mount-sys-fs-fuse-connections.toml mount-sys-fs-pstore.toml  \
+		mount-sys-kernel-config.toml mount-sys-kernel-debug.toml  \
+		mount-sys-kernel-tracing.toml mount-sys.toml mount-tmp.toml  \
+		mount-var-volatile.toml ok-all.toml ok-init.toml ok-lan.toml ok-local.toml  \
+		ok-wan.toml populate-volatile.toml rngseed.toml syslogd.toml \
 		${D}${s6_rc_sourcedir}
 }
 

@@ -2,8 +2,7 @@
 
 [populate-volatile]
 dependencies = [
-    "mount-proc",
-    "init-disks",
+    "mount-var-volatile",
 ]
 type = "oneshot"
 up = "/etc/init.d/populate-volatile.sh"
