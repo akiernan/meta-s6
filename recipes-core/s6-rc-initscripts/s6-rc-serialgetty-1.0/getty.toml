@@ -3,7 +3,7 @@
 ["getty-@DEVICE@"]
 type = "longrun"
 dependencies = [
-    "00",
+    "init-dev",
 ]
 down-signal = "SIGHUP"
 run = """
