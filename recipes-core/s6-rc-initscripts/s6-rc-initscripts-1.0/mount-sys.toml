@@ -2,13 +2,8 @@
 
 [mount-sys]
 dependencies = [
-    "mount-proc",
+    "00",
 ]
 down = "s6-umount /sys"
 type = "oneshot"
-up = """
-if -t { eltest -d /sys }
-if -t { redirfd -r 0 /proc/filesystems s6-grep -qF sysfs }
-if -n -t { eltest -r /sys/class }
-s6-mount -wt sysfs sys /sys
-"""
+up = "s6-mount -t sysfs -o nosuid,nodev,noexec sysfs /sys"
