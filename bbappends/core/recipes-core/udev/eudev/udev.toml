@@ -4,7 +4,6 @@
 dependencies = [
     "mount-proc",
     "mount-sys",
-    "init-static-devnodes",
 ]
 run = """
 #!/usr/bin/execlineb -P
