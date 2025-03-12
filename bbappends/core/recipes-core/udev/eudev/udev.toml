@@ -34,14 +34,14 @@ udevadm trigger --action=add --type=devices
 
 [init-static-devnodes]
 dependencies = [
-    "00",
+    "mount-proc",
 #    "init-sysctl",
 ]
 type = "oneshot"
 up = """
 foreground
 {
-  pipeline { kmod static-nodes --format=devname }
+  pipeline { kmod static-nodes --format=devname --output=/proc/self/fd/1 }
   pipeline { s6-cut -f1 -d\" \" }
   forstdin -pd \"\\n\" -- mod
   importas -iu mod mod
