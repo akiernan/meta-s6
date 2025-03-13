@@ -1,0 +1,28 @@
+# SPDX-License-Identifier: MIT
+
+[set-date]
+type = "oneshot"
+dependencies = [
+    "00",
+    "init-disks"
+]
+up = """
+ifelse { eltest -e /dev/rtc } { hwclock --utc --hctosys }
+ifelse { eltest -r /var/lib/timesync/tai64n }
+{
+  backtick -E TAI64N { redirfd -r 0 /var/lib/timesync/tai64n s6-cat }
+  s6-clock $TAI64N
+}
+ifelse { eltest -r /etc/timestamp }
+{
+  backtick -E TIMESTAMP { redirfd -r 0 /etc/timestamp sed -e "s/^\\\\(....\\\\)\\\\(.*\\\\)\\\\(..\\\\)$/\\\\2\\\\1.\\\\3/" }
+  redirfd -w 1 /dev/null
+  date --utc $TIMESTAMP
+}
+"""
+down = """
+if { s6-mkdir -m 0700 -p /var/lib/timesync }
+if { redirfd -w 1 /var/lib/timesync/tai64n s6-clock }
+if -t { eltest -e /dev/rtc }
+hwclock --utc --systohc
+"""

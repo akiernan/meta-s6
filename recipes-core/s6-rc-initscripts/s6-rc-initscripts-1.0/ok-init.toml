@@ -8,5 +8,6 @@ contents = [
     "klogd",
     "rngseed",
     "syslogd",
+    "set-date",
 ]
 type = "bundle"
