@@ -12,7 +12,7 @@ run = """\
 
 fdmove -c 2 1
 exec -c
-wpa_supplicant -u -c/etc/wpa_supplicant.conf
+wpa_supplicant -d -u -c/etc/wpa_supplicant.conf
 """
 
 [wpa-supplicant-log]
