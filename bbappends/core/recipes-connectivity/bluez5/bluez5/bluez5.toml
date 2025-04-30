@@ -1,0 +1,40 @@
+# SPDX-License-Identifier: MIT
+
+[bluetooth-srv]
+type = "longrun"
+dependencies = [
+    "dbus-srv",
+    "udev-trigger",
+]
+producer-for = "bluetooth-log"
+run = """\
+#!/usr/bin/execlineb -P
+
+fdmove -c 2 1
+/usr/libexec/bluetooth/bluetoothd --nodetach
+"""
+
+[bluetooth-log]
+type = "longrun"
+consumer-for = [
+    "bluetooth-srv",
+]
+dependencies = [
+    "populate-volatile",
+]
+notification-fd = 3
+pipeline-name = "bluetooth-pipeline"
+run = """
+#!/usr/bin/execlineb -P
+
+s6-envuidgid root
+s6-envuidgid -g adm
+s6-applyuidgid
+exec -c
+s6-log -d3 -- t s131072 n1 /var/log/bluetooth
+"""
+
+[ok-lan]
+contents = [
+    "bluetooth-pipeline",
+]
