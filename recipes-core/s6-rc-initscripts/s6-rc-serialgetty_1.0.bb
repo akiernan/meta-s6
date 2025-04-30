@@ -4,7 +4,6 @@ LIC_FILES_CHKSUM = "file://${COREBASE}/meta/files/common-licenses/MIT;md5=0835ad
 
 SRC_URI = "\
     file://getty.toml \
-    file://ok-init.toml \
 "
 
 SERIAL_TERM ?= "vt102"
@@ -21,10 +20,8 @@ do_compile[noexec] = "1"
 do_install() {
 	CONSOLES="${SERIAL_CONSOLES}"
 	if [ -n "$CONSOLES" ]; then
-		install -d ${D}${s6_rc_sourcedir}
-		install ${UNPACKDIR}/ok-init.toml ${D}${s6_rc_sourcedir}/
+		install -d -m 0755 ${D}${s6_rc_sourcedir}
 		install -d -m 0755 ${D}${s6_rc_sourcedir}/init-tty
-		echo "bundle" >${D}${s6_rc_sourcedir}/init-tty/type
 		install -d -m 0755 ${D}${s6_rc_sourcedir}/init-tty/contents.d
 
 		for s in $CONSOLES; do
