@@ -50,14 +50,6 @@ exit 0
 """
 
 [init-dev]
-type = "bundle"
 contents = [
     "udev-srv",
 ]
-
-[ok-init]
-type = "bundle"
-contents = [
-    "init-dev",
-]
-

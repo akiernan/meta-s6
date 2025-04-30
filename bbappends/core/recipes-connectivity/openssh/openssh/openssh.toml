@@ -36,7 +36,6 @@ s6-log -d3 -- t s131072 n1 /var/log/openssh
 """
 
 [ok-lan]
-type = "bundle"
 contents = [
     "openssh-pipeline",
 ]

@@ -40,7 +40,6 @@ s6-log -d3 -- t s131072 n1 /var/log/dbus
 """
 
 [ok-local]
-type = "bundle"
 contents = [
     "dbus-pipeline",
 ]

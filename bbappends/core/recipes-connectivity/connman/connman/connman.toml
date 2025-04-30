@@ -15,7 +15,6 @@ connmand --nodaemon --noperror
 """
 
 [ok-lan]
-type = "bundle"
 contents = [
     "connman-srv",
 ]
