@@ -8,6 +8,7 @@ CONFIGUREOPTS = " \
     --includedir=${includedir} \
     --datadir=${sysconfdir} \
     --sysdepdir=${libdir}/${BPN}/sysdeps \
+    --disable-pkgconfig \
     --enable-shared \
     ${EXTRA_OECONF} \
     ${PACKAGECONFIG_CONFARGS} \
@@ -35,6 +36,12 @@ skarnet_do_compile() {
 
 skarnet_do_install() {
 	oe_runmake DESTDIR=${D} install
+	if [ -d ${D}${libdir} ]; then
+		find ${D}${libdir} -name 'lib*.so' -exec chrpath -d {} \;
+	fi
 }
 
 EXPORT_FUNCTIONS do_configure do_compile do_install
+
+# pkgconfig support seems to have broken these dependencies which leak into targets
+EXTRA_OEMAKE:append = " -W-lskarnet -W-ls6 -W-ls6dns -W-lexecline"
