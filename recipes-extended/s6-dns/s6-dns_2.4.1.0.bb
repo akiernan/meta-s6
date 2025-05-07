@@ -2,12 +2,12 @@ SUMMARY = "s6-dns - a DNS client suite"
 HOMEPAGE = "https://skarnet.org/software/s6-dns/"
 
 LICENSE = "ISC"
-LIC_FILES_CHKSUM = "file://COPYING;md5=c92b5c6593e97d6cc9bcb4892128e2b8"
+LIC_FILES_CHKSUM = "file://COPYING;md5=5c17f5dc8226509a4f72d6be7ae756b4"
 
 DEPENDS = "skalibs"
 
 SRC_URI = "https://skarnet.org/software/s6-dns/s6-dns-${PV}.tar.gz"
-SRC_URI[sha256sum] = "4d7ab49c9842ac25b668dc1e2a9260be97757a75f263ce85f9b6556ad2e1dee4"
+SRC_URI[sha256sum] = "b6308519f109a67469c4aaafa9df1f009ad0961fa798ffc38f895587e6935729"
 
 inherit skarnet
 
