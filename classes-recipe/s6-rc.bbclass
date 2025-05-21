@@ -3,7 +3,7 @@ inherit python3native
 # /OR/ s6_rc_sourcedir = "${nonarch_base_libdir}/s6-rc/source"
 s6_rc_sourcedir = "${sysconfdir}/s6-rc/source"
 
-DEPENDS:append:class-target = " s6-rc execline s6-portable-utils"
+DEPENDS += "s6-rc execline s6-portable-utils"
 
 PACKAGE_WRITE_DEPS += "qemu-native"
 
@@ -123,4 +123,4 @@ python s6_rc_explode_dirfiles () {
                             pass
             os.remove(d)
 }
-do_install:class-target[postfuncs] += "s6_rc_generate_services s6_rc_explode_dirfiles"
+do_install[postfuncs] += "s6_rc_generate_services s6_rc_explode_dirfiles"
