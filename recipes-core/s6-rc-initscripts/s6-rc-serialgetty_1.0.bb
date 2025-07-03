@@ -10,8 +10,7 @@ SERIAL_TERM ?= "vt102"
 
 inherit s6-rc
 
-S = "${WORKDIR}/sources"
-UNPACKDIR = "${S}"
+S = "${UNPACKDIR}"
 
 INHIBIT_DEFAULT_DEPS = "1"
 

@@ -37,8 +37,7 @@ SRC_URI = "\
     file://syslogd.toml \
 "
 
-S = "${WORKDIR}/sources"
-UNPACKDIR = "${S}"
+S = "${UNPACKDIR}"
 
 inherit s6-rc
 
