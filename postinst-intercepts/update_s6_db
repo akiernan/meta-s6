@@ -10,4 +10,6 @@ set -e
 PSEUDO_UNLOAD=1 ${binprefix}qemuwrapper -L $D \
     $D${bindir}/s6-rc-compile $D${sysconfdir}/s6-rc/compiled-initial $D${sysconfdir}/s6-rc/source
 chown -R root:root $D${sysconfdir}/s6-rc/compiled-initial
-ln -sf compiled-initial $D${sysconfdir}/s6-rc/compiled
+# s6-rc 0.7 expects the boot database at ${sysconfdir}/s6-rc/compiled/current
+install -d $D${sysconfdir}/s6-rc/compiled
+ln -sf ../compiled-initial $D${sysconfdir}/s6-rc/compiled/current

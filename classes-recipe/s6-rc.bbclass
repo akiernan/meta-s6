@@ -14,8 +14,8 @@ else
 	stamp=`s6-clock`
 	s6-rc-compile ${sysconfdir}/s6-rc/compiled-$stamp ${s6_rc_sourcedir}
 	s6-rc-update ${sysconfdir}/s6-rc/compiled-$stamp
-	olddb=`s6-linkname -f ${sysconfdir}/s6-rc/compiled`
-	s6-ln -nsf compiled-$stamp ${sysconfdir}/s6-rc/compiled
+	olddb=`s6-linkname -f ${sysconfdir}/s6-rc/compiled/current`
+	s6-ln -nsf ../compiled-$stamp ${sysconfdir}/s6-rc/compiled/current
 	rm -rf $olddb
 fi
 }
@@ -27,8 +27,8 @@ else
 	stamp=`s6-clock`
 	s6-rc-compile ${sysconfdir}/s6-rc/compiled-$stamp ${s6_rc_sourcedir}
 	s6-rc-update ${sysconfdir}/s6-rc/compiled-$stamp
-	olddb=`s6-linkname -f ${sysconfdir}/s6-rc/compiled`
-	s6-ln -nsf compiled-$stamp ${sysconfdir}/s6-rc/compiled
+	olddb=`s6-linkname -f ${sysconfdir}/s6-rc/compiled/current`
+	s6-ln -nsf ../compiled-$stamp ${sysconfdir}/s6-rc/compiled/current
 	rm -rf $olddb
 fi
 }
