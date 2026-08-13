@@ -2,12 +2,12 @@ SUMMARY = "mdevd - a mdev-compatible hotplug manager daemon"
 HOMEPAGE = "https://skarnet.org/software/mdevd/"
 
 LICENSE = "ISC"
-LIC_FILES_CHKSUM = "file://COPYING;md5=65002497793ffd12ad4c6062c84d6ff7"
+LIC_FILES_CHKSUM = "file://COPYING;md5=00f0789e79a05a58895c51ad18687349"
 
 DEPENDS = "skalibs"
 
 SRC_URI = "https://skarnet.org/software/mdevd/mdevd-${PV}.tar.gz"
-SRC_URI[sha256sum] = "ec966eec39879f33c785343373021c44f887c836a08fcaf1d63412e3bdbfca32"
+SRC_URI[sha256sum] = "ce1ae0149b6a57a34f608218fd6181aa6aa68135cac2f4d931b5b417b072e244"
 
 PACKAGECONFIG ?= ""
 PACKAGECONFIG[nsss] = "--enable-nsss,--disable-nsss,nsss"
