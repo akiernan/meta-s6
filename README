@@ -1,41 +1,121 @@
-This README file contains information on the contents of the meta-s6 layer.
+meta-s6
+=======
 
-Please see the corresponding sections below for details.
+This layer provides recipes for the skarnet.org software suite, centred
+on the s6 process supervision suite, together with the integration
+needed to boot a Yocto Project / OpenEmbedded image with s6-linux-init
+as init and either s6-rc or sysvinit-style initscripts as the service
+manager.
+
+Contents
+========
+
+  * Recipes for the skarnet.org packages: skalibs, execline, s6, s6-rc,
+    s6-frontend, s6-linux-init, s6-dns, s6-networking,
+    s6-portable-utils, s6-linux-utils, mdevd, nsss, utmps, dnsfunnel,
+    shibari, smtpd-starttls-proxy, tipidee, bcnm and apaste.
+
+  * libretls (libtls on top of OpenSSL), used by s6-networking for its
+    TLS support and not available in other common layers.
+
+  * classes-recipe/skarnet.bbclass: shared configure/compile/install
+    logic for the skarnet build system.
+
+  * classes-recipe/s6-rc.bbclass: packages s6-rc service definitions,
+    written as TOML service bundles, and compiles them into the system
+    s6-rc database on package install (via postinst, or a postinst
+    intercept at image construction time).
+
+  * bbappends (enabled dynamically against openembedded-core) adding
+    s6-rc service definitions for common daemons: bluez5, connman,
+    dbus, openssh, wpa-supplicant and eudev, plus initscripts and
+    sysvinit-inittab integration.
 
 Dependencies
 ============
 
-  URI: <first dependency>
-  branch: <branch name>
+  URI: https://git.openembedded.org/openembedded-core
+  branch: wrynose
 
-  URI: <second dependency>
-  branch: <branch name>
+Usage
+=====
 
-  .
-  .
-  .
+Add the layer to your build:
+
+  bitbake-layers add-layer meta-s6
+
+Then select the init manager in your distro configuration, either:
+
+  require conf/distro/include/init-manager-s6-linux-init-s6-rc.inc
+
+for s6-linux-init with s6-rc as the service manager, or:
+
+  require conf/distro/include/init-manager-s6-linux-init-sysvinit-rc.inc
+
+for s6-linux-init running traditional sysvinit rc scripts.
+
+The same choice is available as a configuration fragment, which is
+usually more convenient than editing a distro configuration:
+
+  bitbake-config-build enable-fragment meta-s6/init-s6-rc
+
+or meta-s6/init-sysvinit-rc.
+
+Managing services on the target
+===============================
+
+Service definitions are installed by packages into the store in
+/usr/share/s6/sources; /etc/s6/sources is left empty for local
+definitions. The database booted from is compiled at image
+construction time into /etc/s6-rc/compiled, and which services start at
+boot is decided by the flag-essential and flag-recommended markers in
+the definitions themselves, not by editing a bundle.
+
+The s6-rc repository in /var/lib/s6-rc/repository, which the s6 set and
+s6 repository commands work on, is built as part of the image, and the
+database booted from is the set committed there, so s6 set and s6
+repository work on a freshly flashed image and what boots is what
+s6-rc-set-commit produced. Installing a package which ships service
+definitions syncs the repository and installs the new set in the same
+way.
+
+To change which services start at boot, work on the current set and
+install it:
+
+  s6 set enable <service>
+  s6 set apply
+
+s6 set apply commits the working set and makes it live; the boot
+database is updated at the same time, so the change survives a reboot.
+
+Testing under qemu
+==================
+
+meta-s6-qemu.conf.json is a bitbake-setup configuration which builds the
+layer for qemu machines, using the poky distro and the Yocto Project's
+prebuilt sstate mirror:
+
+  bitbake-setup init https://raw.githubusercontent.com/akiernan/meta-s6/main/meta-s6-qemu.conf.json
+
+Choose a configuration when prompted (or pass it on the command line):
+each qemu machine is available with either of the layer's init flavours,
+s6-rc or sysvinit-rc service management. Then:
+
+  source <setup-dir>/build/init-build-env
+  bitbake core-image-minimal
+  runqemu nographic
+
+Log in as root (no password) and inspect the supervision tree with
+s6-rc -a list, s6-svstat, etc.
 
 Patches
 =======
 
-Please submit any patches against the meta-s6 layer to the xxxx mailing list (xxxx@zzzz.org)
-and cc: the maintainer:
+Please submit any patches against the meta-s6 layer to the maintainer:
 
-Maintainer: XXX YYYYYY <xxx.yyyyyy@zzzzz.com>
+Maintainer: Alex Kiernan <alex.kiernan@gmail.com>
 
-Table of Contents
-=================
+License
+=======
 
-  I. Adding the meta-s6 layer to your build
- II. Misc
-
-
-I. Adding the meta-s6 layer to your build
-=================================================
-
-Run 'bitbake-layers add-layer meta-s6'
-
-II. Misc
-========
-
---- replace with specific information about the meta-s6 layer ---
+Recipe metadata in this layer is MIT licensed, see COPYING.MIT.
