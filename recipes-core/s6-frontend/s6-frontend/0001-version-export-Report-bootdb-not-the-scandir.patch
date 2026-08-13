@@ -1,0 +1,26 @@
+From: Alex Kiernan <alex.kiernan@gmail.com>
+Subject: [PATCH] version export: Report bootdb, not the scandir
+
+s6 version export prints the scandir for the bootdb key, so it always
+claims the boot database lives in /run/service. The value is only used
+for reporting - the commands themselves use g->dirs.boot correctly - but
+it misleads anyone reading the configuration back.
+
+Upstream-Status: Pending
+
+Signed-off-by: Alex Kiernan <alex.kiernan@gmail.com>
+---
+ src/s6-frontend/version_export.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/src/s6-frontend/version_export.c
++++ b/src/s6-frontend/version_export.c
+@@ -61,7 +61,7 @@
+   (*f)("scandir", g->dirs.scan, &sa) ;
+   (*f)("livedir", g->dirs.live, &sa) ;
+   (*f)("repodir", g->dirs.repo, &sa) ;
+-  (*f)("bootdb", g->dirs.scan, &sa) ;
++  (*f)("bootdb", g->dirs.boot, &sa) ;
+   (*f)("stmpdir", g->dirs.stmp, &sa) ;
+   (*f)("storelist", g->dirs.stol, &sa) ;
+   (*f)("fdhuser", g->fdhuser ? g->fdhuser : "", &sa) ;
