@@ -2,12 +2,12 @@ SUMMARY = "s6-linux-utils - tiny Linux-specific utilities"
 HOMEPAGE = "https://skarnet.org/software/s6-linux-utils/"
 
 LICENSE = "ISC"
-LIC_FILES_CHKSUM = "file://COPYING;md5=5c17f5dc8226509a4f72d6be7ae756b4"
+LIC_FILES_CHKSUM = "file://COPYING;md5=ea5b4b9a81f21793db1a769bee7302f3"
 
-DEPENDS = "skalibs"
+DEPENDS = "skalibs execline"
 
 SRC_URI = "https://skarnet.org/software/s6-linux-utils/s6-linux-utils-${PV}.tar.gz"
-SRC_URI[sha256sum] = "7e249c36c73b99ebfc1f9a9a4c318be76b461ebc53d3952de9064ccfab400739"
+SRC_URI[sha256sum] = "16e1a5b5a2b4a98674b4a9719612adb79588e3c20c4083360278ea38f2d32129"
 
 EXTRA_OECONF = "--with-seed-dir=${localstatedir}/lib/rngseed"
 
