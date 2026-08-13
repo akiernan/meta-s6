@@ -1,0 +1,100 @@
+{
+    "version": "1.0",
+    "description": "meta-s6 boot/test builds for qemu machines",
+    "sources": {
+        "bitbake": {
+            "git-remote": {
+                "remotes": {
+                    "origin": {
+                        "uri": "https://git.openembedded.org/bitbake"
+                    }
+                },
+                "rev": "2.18"
+            },
+            "path": "bitbake"
+        },
+        "openembedded-core": {
+            "git-remote": {
+                "remotes": {
+                    "origin": {
+                        "uri": "https://git.openembedded.org/openembedded-core"
+                    }
+                },
+                "rev": "wrynose"
+            },
+            "path": "openembedded-core"
+        },
+        "meta-yocto": {
+            "git-remote": {
+                "remotes": {
+                    "origin": {
+                        "uri": "https://git.yoctoproject.org/meta-yocto"
+                    }
+                },
+                "rev": "wrynose"
+            },
+            "path": "meta-yocto"
+        },
+        "meta-s6": {
+            "git-remote": {
+                "remotes": {
+                    "origin": {
+                        "uri": "https://github.com/akiernan/meta-s6"
+                    }
+                },
+                "rev": "main"
+            },
+            "path": "meta-s6"
+        }
+    },
+    "bitbake-setup": {
+        "configurations": [
+            {
+                "bb-layers": [
+                    "openembedded-core/meta",
+                    "meta-yocto/meta-poky",
+                    "meta-s6"
+                ],
+                "oe-fragments": [
+                    "core/yocto/sstate-mirror-cdn",
+                    "distro/poky",
+                    "core/yocto/root-login-with-empty-password"
+                ],
+                "configurations": [
+                    {
+                        "name": "qemux86-64-s6-rc",
+                        "description": "s6-linux-init/s6-rc poky build for qemux86-64",
+                        "oe-fragments": [
+                            "machine/qemux86-64",
+                            "meta-s6/init-s6-rc"
+                        ]
+                    },
+                    {
+                        "name": "qemuarm64-s6-rc",
+                        "description": "s6-linux-init/s6-rc poky build for qemuarm64",
+                        "oe-fragments": [
+                            "machine/qemuarm64",
+                            "meta-s6/init-s6-rc"
+                        ]
+                    },
+                    {
+                        "name": "qemux86-64-sysvinit-rc",
+                        "description": "s6-linux-init/sysvinit-rc poky build for qemux86-64",
+                        "oe-fragments": [
+                            "machine/qemux86-64",
+                            "meta-s6/init-sysvinit-rc"
+                        ]
+                    },
+                    {
+                        "name": "qemuarm64-sysvinit-rc",
+                        "description": "s6-linux-init/sysvinit-rc poky build for qemuarm64",
+                        "oe-fragments": [
+                            "machine/qemuarm64",
+                            "meta-s6/init-sysvinit-rc"
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}
