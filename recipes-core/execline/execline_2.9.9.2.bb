@@ -2,13 +2,12 @@ SUMMARY = "execline - an interpreter-less scripting language"
 HOMEPAGE = "https://skarnet.org/software/execline/"
 
 LICENSE = "ISC"
-LIC_FILES_CHKSUM = "file://COPYING;md5=5c17f5dc8226509a4f72d6be7ae756b4"
+LIC_FILES_CHKSUM = "file://COPYING;md5=ea5b4b9a81f21793db1a769bee7302f3"
 
 DEPENDS = "skalibs"
 
-SRC_URI = "https://skarnet.org/software/execline/execline-${PV}.tar.gz \
-           file://0001-Fix-configure.patch"
-SRC_URI[sha256sum] = "73c9160efc994078d8ea5480f9161bfd1b3cf0b61f7faab704ab1898517d0207"
+SRC_URI = "https://skarnet.org/software/execline/execline-${PV}.tar.gz"
+SRC_URI[sha256sum] = "908ed4db3a6b3a23a205d8fd4cf2a71089156f2aeae0f54656045aafad2dee32"
 
 PACKAGECONFIG ?= "multicall"
 PACKAGECONFIG[multicall] = "--enable-multicall,--disable-multicall"
