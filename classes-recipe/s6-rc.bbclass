@@ -10,16 +10,22 @@ DEPENDS += "s6-rc execline s6-portable-utils"
 
 PACKAGE_WRITE_DEPS += "qemu-native"
 
+# On-device database updates go through the s6-rc repository: sync it
+# with the service stores (creating it on first use), then commit and
+# install the working set. The auto-generated bundle is named "enabled"
+# so it does not collide with the default bundle defined in the stores.
 s6_rc_source_postinst() {
 if test -n "$D"; then
 	$INTERCEPT_DIR/postinst_intercept update_s6_db ${PKG} mlprefix=${MLPREFIX} binprefix=${MLPREFIX}
 else
-	stamp=`s6-clock`
-	s6-rc-compile ${sysconfdir}/s6-rc/compiled-$stamp ${s6_rc_sourcedir}
-	s6-rc-update ${sysconfdir}/s6-rc/compiled-$stamp
-	olddb=`s6-linkname -f ${sysconfdir}/s6-rc/compiled/current`
-	s6-ln -nsf ../compiled-$stamp ${sysconfdir}/s6-rc/compiled/current
-	rm -rf $olddb
+	if test -d ${localstatedir}/lib/s6-rc/repository; then
+		s6-rc-repo-sync
+	else
+		s6-rc-repo-init ${datadir}/s6/sources ${sysconfdir}/s6/sources
+		s6-rc-set-new current
+	fi
+	s6-rc-set-commit -D enabled current
+	s6-rc-set-install -b current
 fi
 }
 
@@ -27,12 +33,14 @@ s6_rc_source_postrm() {
 if test -n "$D"; then
 	$INTERCEPT_DIR/postinst_intercept update_s6_db ${PKG} mlprefix=${MLPREFIX} binprefix=${MLPREFIX}
 else
-	stamp=`s6-clock`
-	s6-rc-compile ${sysconfdir}/s6-rc/compiled-$stamp ${s6_rc_sourcedir}
-	s6-rc-update ${sysconfdir}/s6-rc/compiled-$stamp
-	olddb=`s6-linkname -f ${sysconfdir}/s6-rc/compiled/current`
-	s6-ln -nsf ../compiled-$stamp ${sysconfdir}/s6-rc/compiled/current
-	rm -rf $olddb
+	if test -d ${localstatedir}/lib/s6-rc/repository; then
+		s6-rc-repo-sync
+	else
+		s6-rc-repo-init ${datadir}/s6/sources ${sysconfdir}/s6/sources
+		s6-rc-set-new current
+	fi
+	s6-rc-set-commit -D enabled current
+	s6-rc-set-install -b current
 fi
 }
 
