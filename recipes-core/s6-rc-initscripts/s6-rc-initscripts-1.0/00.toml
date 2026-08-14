@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: MIT
 
 [00]
+flag-essential = true
 type = "oneshot"
 up = """
 if { s6-echo \"init-stage2 starting.\" }

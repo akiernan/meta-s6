@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: MIT
 
 [rngseed]
+flag-recommended = true
 dependencies = [
     "00",
     "init-disks"

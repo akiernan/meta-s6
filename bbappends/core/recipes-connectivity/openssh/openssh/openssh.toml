@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: MIT
 
 [openssh-srv]
+flag-recommended = true
 type = "longrun"
 dependencies = [
     "ok-local",
@@ -16,6 +17,7 @@ exec -c
 """
 
 [openssh-log]
+flag-recommended = true
 type = "longrun"
 consumer-for = [
     "openssh-srv",

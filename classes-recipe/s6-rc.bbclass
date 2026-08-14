@@ -12,8 +12,8 @@ PACKAGE_WRITE_DEPS += "qemu-native"
 
 # On-device database updates go through the s6-rc repository: sync it
 # with the service stores (creating it on first use), then commit and
-# install the working set. The auto-generated bundle is named "enabled"
-# so it does not collide with the default bundle defined in the stores.
+# install the working set; its auto-generated default bundle is built from
+# the flag-essential and flag-recommended markers in the stores.
 s6_rc_source_postinst() {
 if test -n "$D"; then
 	$INTERCEPT_DIR/postinst_intercept update_s6_db ${PKG} mlprefix=${MLPREFIX} binprefix=${MLPREFIX}
@@ -24,7 +24,8 @@ else
 		s6-rc-repo-init ${datadir}/s6/sources ${sysconfdir}/s6/sources
 		s6-rc-set-new current
 	fi
-	s6-rc-set-commit -D enabled current
+	s6-rc-set-fix -u current
+	s6-rc-set-commit current
 	s6-rc-set-install -b current
 fi
 }
@@ -39,7 +40,8 @@ else
 		s6-rc-repo-init ${datadir}/s6/sources ${sysconfdir}/s6/sources
 		s6-rc-set-new current
 	fi
-	s6-rc-set-commit -D enabled current
+	s6-rc-set-fix -u current
+	s6-rc-set-commit current
 	s6-rc-set-install -b current
 fi
 }

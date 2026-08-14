@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: MIT
 
 [populate-volatile]
+flag-essential = true
 dependencies = [
     "mount-var-volatile",
 ]

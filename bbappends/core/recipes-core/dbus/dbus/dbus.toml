@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: MIT
 
 [dbus-srv]
+flag-recommended = true
 type = "longrun"
 dependencies = [
     "populate-volatile",
@@ -22,6 +23,7 @@ dbus-daemon --system --nofork --nosyslog --nopidfile --print-pid=3
 """
 
 [dbus-log]
+flag-recommended = true
 type = "longrun"
 consumer-for = ["dbus-srv"]
 dependencies = [

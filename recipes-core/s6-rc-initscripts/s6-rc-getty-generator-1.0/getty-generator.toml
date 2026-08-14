@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: MIT
 
 [getty-generator]
+flag-recommended = true
 type = "oneshot"
 dependencies = [
     "getty-srv",

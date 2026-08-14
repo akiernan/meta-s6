@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: MIT
 
 [klogd-srv]
+flag-recommended = true
 dependencies = [
     "mount-proc",
 ]
@@ -15,6 +16,7 @@ ucspilogd
 type = "longrun"
 
 [klogd-log]
+flag-recommended = true
 consumer-for = [
     "klogd-srv",
 ]

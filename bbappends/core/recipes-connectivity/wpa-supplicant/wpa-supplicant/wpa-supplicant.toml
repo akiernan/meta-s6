@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: MIT
 
 [wpa-supplicant-srv]
+flag-recommended = true
 type = "longrun"
 dependencies = [
     "dbus-srv",
@@ -16,6 +17,7 @@ wpa_supplicant -d -u -c/etc/wpa_supplicant.conf
 """
 
 [wpa-supplicant-log]
+flag-recommended = true
 type = "longrun"
 consumer-for = [
     "wpa-supplicant-srv",

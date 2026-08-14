@@ -48,6 +48,8 @@ do_install() {
 	cp -R --preserve=mode,links ${WORKDIR}/getty-instanced/getty-srv ${D}${s6_rc_sourcedir}/
 	install -d -m 0755 ${D}${s6_rc_sourcedir}/getty-srv/dependencies.d
 	touch ${D}${s6_rc_sourcedir}/getty-srv/dependencies.d/init-dev
+	# the generator needs it, so it belongs in the boot set in its own right
+	touch ${D}${s6_rc_sourcedir}/getty-srv/flag-recommended
 
 	install -m 0644 ${UNPACKDIR}/getty-generator.toml ${D}${s6_rc_sourcedir}
 	install -d -m 0755 ${D}${s6_rc_sourcedir}/init-tty/contents.d

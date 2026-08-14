@@ -16,9 +16,23 @@ if [ -d "$D${sysconfdir}/s6/sources" ] && [ -n "$(ls -A $D${sysconfdir}/s6/sourc
 	stores="$stores $D${sysconfdir}/s6/sources"
 fi
 
+# Synthesize the boot bundle the way s6-rc-set-commit does: essential and
+# recommended services form the default bundle, everything else is only
+# started on demand or as a dependency.
+gensrc=$(mktemp -d)
+mkdir -p $gensrc/default/contents.d
+echo bundle > $gensrc/default/type
+for store in $stores; do
+	for svc in $store/*/; do
+		[ -f "$svc/flag-essential" ] || [ -f "$svc/flag-recommended" ] || continue
+		touch $gensrc/default/contents.d/$(basename $svc)
+	done
+done
+
 rm -rf $D${sysconfdir}/s6-rc/compiled/initial
 install -d $D${sysconfdir}/s6-rc/compiled
 PSEUDO_UNLOAD=1 ${binprefix}qemuwrapper -L $D \
-    $D${bindir}/s6-rc-compile $D${sysconfdir}/s6-rc/compiled/initial $stores
+    $D${bindir}/s6-rc-compile $D${sysconfdir}/s6-rc/compiled/initial $stores $gensrc
+rm -rf $gensrc
 chown -R root:root $D${sysconfdir}/s6-rc/compiled/initial
 ln -sf initial $D${sysconfdir}/s6-rc/compiled/current

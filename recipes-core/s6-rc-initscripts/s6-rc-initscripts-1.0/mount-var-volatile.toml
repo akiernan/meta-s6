@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: MIT
 
 [mount-var-volatile]
+flag-essential = true
 type = "oneshot"
 dependencies = [
     "00",

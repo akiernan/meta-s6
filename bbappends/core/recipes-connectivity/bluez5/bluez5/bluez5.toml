@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: MIT
 
 [bluetooth-srv]
+flag-recommended = true
 type = "longrun"
 dependencies = [
     "dbus-srv",
@@ -15,6 +16,7 @@ fdmove -c 2 1
 """
 
 [bluetooth-log]
+flag-recommended = true
 type = "longrun"
 consumer-for = [
     "bluetooth-srv",

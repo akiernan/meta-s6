@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: MIT
 
 [udev-srv]
+flag-recommended = true
 dependencies = [
     "mount-proc",
     "mount-sys",
@@ -22,6 +23,7 @@ type = "oneshot"
 up = "udevadm settle"
 
 [udev-trigger]
+flag-recommended = true
 dependencies = [
     "udev-srv",
 ]

@@ -6,7 +6,6 @@ INHIBIT_DEFAULT_DEPS = "1"
 
 SRC_URI = "\
     file://00.toml \
-    file://default.toml \
     file://init-dev.toml \
     file://init-disks.toml \
     file://init-tty.toml \
@@ -46,7 +45,7 @@ do_install:append() {
 	install -d -m 0755 ${D}${sysconfdir}/s6/sources
 
 	install -d -m 0755 ${D}${s6_rc_sourcedir}
-	install -m 0644 00.toml default.toml init-dev.toml init-disks.toml init-tty.toml klogd.toml  \
+	install -m 0644 00.toml init-dev.toml init-disks.toml init-tty.toml klogd.toml  \
 		mount-dev-hugepages.toml mount-dev-mqueue.toml mount-dev-pts.toml  \
 		mount-proc-sys-fs-binfmt_misc.toml mount-proc.toml mount-sys-fs-bpf.toml  \
 		mount-sys-fs-cgroup.toml mount-sys-fs-fuse-connections.toml  \

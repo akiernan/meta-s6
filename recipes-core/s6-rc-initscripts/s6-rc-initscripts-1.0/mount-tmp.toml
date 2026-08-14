@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: MIT
 
 [mount-tmp]
+flag-essential = true
 type = "oneshot"
 dependencies = [
     "00",
