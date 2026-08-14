@@ -1,0 +1,6 @@
+#!/usr/bin/execlineb -S1
+case -s $1
+{
+  "tty[0-9]*" { exec -c getty @VT_BAUDRATE@ $1 }
+}
+exec -c getty -L @BAUDRATE@ $1 @TERM@

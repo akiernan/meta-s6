@@ -1,0 +1,30 @@
+#!/bin/sh
+# Create a getty instance on each active kernel console, in the manner
+# of systemd's serial-getty generator: ask the kernel which consoles are
+# live (per console= on the command line) rather than baking a static
+# list into the image. The instances hang off the getty-srv instanced
+# service, so they are supervised within the s6-rc-managed tree.
+
+svc=/run/service/getty-srv
+
+case "$1" in
+stop)
+	for i in $(s6-instance-list "$svc" 2>/dev/null); do
+		s6-instance-delete "$svc" "$i" 2>/dev/null || :
+	done
+	exit 0
+	;;
+esac
+
+[ -r /sys/class/tty/console/active ] || exit 0
+
+for tty in $(cat /sys/class/tty/console/active); do
+	# tty0 is "whatever VT is active": resolve it
+	if [ "$tty" = tty0 ]; then
+		tty=$(cat /sys/class/tty/tty0/active 2>/dev/null)
+	fi
+	[ -n "$tty" ] && [ -c "/dev/$tty" ] || continue
+	s6-instance-list "$svc" 2>/dev/null | grep -qx "$tty" && continue
+	s6-instance-create -t 10000 "$svc" "$tty"
+done
+exit 0

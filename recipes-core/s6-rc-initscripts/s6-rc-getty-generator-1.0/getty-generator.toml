@@ -1,0 +1,13 @@
+# SPDX-License-Identifier: MIT
+
+[getty-generator]
+type = "oneshot"
+dependencies = [
+    "getty-srv",
+]
+up = """
+/usr/libexec/s6-rc-getty-generator
+"""
+down = """
+/usr/libexec/s6-rc-getty-generator stop
+"""
