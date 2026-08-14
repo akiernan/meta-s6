@@ -6,10 +6,19 @@ set -e
 # native world. Ideally we'd use s6-rc-cross, only we've not managed to make that build. Given
 # we have s6-rc-compile in the image (though technically we don't need it) we drop into qemu to
 # build the database.
+#
+# The boot database is compiled directly from the service stores; the s6-rc repository
+# (/var/lib/s6-rc/repository) is an on-device concern and is not created at image time, as it
+# would embed build-host paths in its symlinks.
 
-PSEUDO_UNLOAD=1 ${binprefix}qemuwrapper -L $D \
-    $D${bindir}/s6-rc-compile $D${sysconfdir}/s6-rc/compiled-initial $D${sysconfdir}/s6-rc/source
-chown -R root:root $D${sysconfdir}/s6-rc/compiled-initial
-# s6-rc 0.7 expects the boot database at ${sysconfdir}/s6-rc/compiled/current
+stores="$D${datadir}/s6/sources"
+if [ -d "$D${sysconfdir}/s6/sources" ] && [ -n "$(ls -A $D${sysconfdir}/s6/sources)" ]; then
+	stores="$stores $D${sysconfdir}/s6/sources"
+fi
+
+rm -rf $D${sysconfdir}/s6-rc/compiled/initial
 install -d $D${sysconfdir}/s6-rc/compiled
-ln -sf ../compiled-initial $D${sysconfdir}/s6-rc/compiled/current
+PSEUDO_UNLOAD=1 ${binprefix}qemuwrapper -L $D \
+    $D${bindir}/s6-rc-compile $D${sysconfdir}/s6-rc/compiled/initial $stores
+chown -R root:root $D${sysconfdir}/s6-rc/compiled/initial
+ln -sf initial $D${sysconfdir}/s6-rc/compiled/current

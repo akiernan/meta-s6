@@ -42,6 +42,9 @@ S = "${UNPACKDIR}"
 inherit s6-rc
 
 do_install:append() {
+	# the (empty) local admin service store
+	install -d -m 0755 ${D}${sysconfdir}/s6/sources
+
 	install -d -m 0755 ${D}${s6_rc_sourcedir}
 	install -m 0644 00.toml default.toml init-dev.toml init-disks.toml init-tty.toml klogd.toml  \
 		mount-dev-hugepages.toml mount-dev-mqueue.toml mount-dev-pts.toml  \

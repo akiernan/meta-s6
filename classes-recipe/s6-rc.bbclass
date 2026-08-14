@@ -1,7 +1,10 @@
 inherit python3native
 
-# /OR/ s6_rc_sourcedir = "${nonarch_base_libdir}/s6-rc/source"
-s6_rc_sourcedir = "${sysconfdir}/s6-rc/source"
+# The package-manager service store, per s6-frontend's default storelist;
+# the local admin store is ${sysconfdir}/s6/sources
+s6_rc_sourcedir = "${datadir}/s6/sources"
+
+FILES:${PN} += "${s6_rc_sourcedir}"
 
 DEPENDS += "s6-rc execline s6-portable-utils"
 
