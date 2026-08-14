@@ -44,4 +44,4 @@ skarnet_do_install() {
 EXPORT_FUNCTIONS do_configure do_compile do_install
 
 # pkgconfig support seems to have broken these dependencies which leak into targets
-EXTRA_OEMAKE:append = " -W-lskarnet -W-ls6 -W-ls6dns -W-lexecline"
+EXTRA_OEMAKE:append = " -W-lskarnet -W-ls6 -W-ls6dns -W-ls6rc -W-lexecline -W-lnsss"
