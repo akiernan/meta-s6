@@ -56,4 +56,4 @@ do_install:append() {
 		${D}${s6_rc_sourcedir}
 }
 
-RDEPENDS:${PN} += "s6-linux-utils s6-portable-utils initscripts-populate-volatile s6-rc-getty-generator"
+RDEPENDS:${PN} += "s6-frontend s6-linux-utils s6-portable-utils initscripts-populate-volatile s6-rc-getty-generator"
