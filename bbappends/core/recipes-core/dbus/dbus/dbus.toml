@@ -40,8 +40,3 @@ s6-applyuidgid
 exec -c
 s6-log -d3 -- t s131072 n1 /var/log/dbus
 """
-
-[ok-local]
-contents = [
-    "dbus-pipeline",
-]

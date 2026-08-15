@@ -4,7 +4,7 @@
 flag-recommended = true
 type = "longrun"
 dependencies = [
-    "ok-local",
+    "populate-volatile",
 ]
 producer-for = "openssh-log"
 run = """
@@ -36,8 +36,3 @@ s6-applyuidgid
 exec -c
 s6-log -d3 -- t s131072 n1 /var/log/openssh
 """
-
-[ok-lan]
-contents = [
-    "openssh-pipeline",
-]

@@ -1,7 +1,0 @@
-# SPDX-License-Identifier: MIT
-
-[ok-local]
-contents = [
-    "init-tty",
-]
-type = "bundle"

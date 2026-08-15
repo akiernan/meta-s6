@@ -14,8 +14,3 @@ run = """\
 fdmove -c 2 1
 connmand --nodaemon --noperror
 """
-
-[ok-lan]
-contents = [
-    "connman-srv",
-]
