@@ -10,11 +10,9 @@ SRC_URI = "https://skarnet.org/software/s6-linux-init/s6-linux-init-${PV}.tar.gz
            file://rcS-default \
            file://rc.init-sysvinit-rc \
            file://rc.shutdown-sysvinit-rc \
-           file://rc.shutdown.final-sysvinit-rc \
            file://runlevel-sysvinit-rc \
            file://rc.init-s6-rc \
            file://rc.shutdown-s6-rc \
-           file://rc.shutdown.final-s6-rc \
            file://runlevel-s6-rc"
 SRC_URI[sha256sum] = "6fad014da162c0c81924197c57d16e1a75c133b34a20e423431a1b741e907b1d"
 
@@ -46,7 +44,7 @@ do_install:append:class-target () {
 			${UNPACKDIR}/rcS-default > ${D}${sysconfdir}/default/rcS
 		chmod 0644 ${D}${sysconfdir}/default/rcS
 		install -d -m 0755 ${D}${sysconfdir}/s6-linux-init/skel
-		for i in rc.init rc.shutdown rc.shutdown.final runlevel; do
+		for i in rc.init rc.shutdown runlevel; do
 			install -m 0755 ${UNPACKDIR}/$i-${S6_LINUX_INIT_SERVICE_MANAGER} ${D}${sysconfdir}/s6-linux-init/skel/$i
 		done
 	fi
