@@ -4,7 +4,7 @@ HOMEPAGE = "https://skarnet.org/software/s6-linux-init/"
 LICENSE = "ISC"
 LIC_FILES_CHKSUM = "file://COPYING;md5=397588315e6b6414b74abe203749f1ee"
 
-DEPENDS = "skalibs execline qemu-native s6"
+DEPENDS = "skalibs execline s6 s6-linux-init-native"
 
 SRC_URI = "https://skarnet.org/software/s6-linux-init/s6-linux-init-${PV}.tar.gz \
            file://rcS-default \
@@ -16,7 +16,7 @@ SRC_URI = "https://skarnet.org/software/s6-linux-init/s6-linux-init-${PV}.tar.gz
            file://runlevel-s6-rc"
 SRC_URI[sha256sum] = "6fad014da162c0c81924197c57d16e1a75c133b34a20e423431a1b741e907b1d"
 
-inherit qemu skarnet update-alternatives useradd
+inherit skarnet update-alternatives useradd
 
 PACKAGECONFIG ?= ""
 PACKAGECONFIG[nsss] = "--enable-nsss,--disable-nsss,nsss"
@@ -48,8 +48,7 @@ do_install:append:class-target () {
 			install -m 0755 ${UNPACKDIR}/$i-${S6_LINUX_INIT_SERVICE_MANAGER} ${D}${sysconfdir}/s6-linux-init/skel/$i
 		done
 	fi
-	${@qemu_wrapper_cmdline(d, '${STAGING_DIR_TARGET}', ['${D}${libdir}', '${STAGING_DIR_TARGET}/${base_libdir}', '${STAGING_DIR_TARGET}/${libdir}'])} \
-	${D}${bindir}/s6-linux-init-maker \
+	s6-linux-init-maker \
 		-c "${sysconfdir}/s6-linux-init/current" \
 		-u catchlog \
 		${@ "-G '${S6_LINUX_INIT_EARLY_GETTY}'" if d.getVar('S6_LINUX_INIT_EARLY_GETTY', True) else ''} \

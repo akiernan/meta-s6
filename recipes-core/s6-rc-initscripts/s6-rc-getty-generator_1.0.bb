@@ -40,10 +40,6 @@ do_install() {
 	rm -rf ${WORKDIR}/getty-instanced
 	s6-instance-maker -c ${S6_GETTY_MAX_INSTANCES} -r getty-srv \
 		${WORKDIR}/getty-template ${WORKDIR}/getty-instanced
-	# the generated scripts carry the native execline's shebang path
-	find ${WORKDIR}/getty-instanced -type f \
-		-exec sed -i '1s|^#!.*/execlineb|#!/usr/bin/execlineb|' {} +
-
 	install -d -m 0755 ${D}${s6_rc_sourcedir}
 	cp -R --preserve=mode,links ${WORKDIR}/getty-instanced/getty-srv ${D}${s6_rc_sourcedir}/
 	install -d -m 0755 ${D}${s6_rc_sourcedir}/getty-srv/dependencies.d
