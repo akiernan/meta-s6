@@ -2,37 +2,59 @@
 
 set -e
 
-# We can't use s6-rc-native here to compile the service database as that sets paths based on the
-# native world. Ideally we'd use s6-rc-cross, only we've not managed to make that build. Given
-# we have s6-rc-compile in the image (though technically we don't need it) we drop into qemu to
-# build the database.
+# Build the s6-rc repository and the boot database for the image.
 #
-# The boot database is compiled directly from the service stores; the s6-rc repository
-# (/var/lib/s6-rc/repository) is an on-device concern and is not created at image time, as it
-# would embed build-host paths in its symlinks.
+# The tools are the native builds, which are configured with the target's
+# paths for the two things s6-rc-compile embeds in what it generates (the
+# execline shebang and the libexec prefix), so a database compiled here is
+# byte for byte the one the target would have compiled for itself. Nothing
+# needs to run under emulation.
+#
+# The repository is built the way the target would build it, rather than the
+# boot database being assembled by hand, so that what boots is exactly what
+# s6-rc-set-commit produces and the first repo operation on the target does
+# not silently change the boot set.
 
-stores="$D${datadir}/s6/sources"
-if [ -d "$D${sysconfdir}/s6/sources" ] && [ -n "$(ls -A $D${sysconfdir}/s6/sources)" ]; then
-	stores="$stores $D${sysconfdir}/s6/sources"
+repo=$D${localstatedir}/lib/s6-rc/repository
+
+# Both stores are recorded even when the local one is empty, so that the
+# repository's store list matches the one s6-frontend is built with and an
+# administrator can drop definitions into /etc/s6/sources without having to
+# update the stores first.
+install -d "$D${sysconfdir}/s6/sources"
+stores="$D${datadir}/s6/sources $D${sysconfdir}/s6/sources"
+
+# s6-rc-repo-init does not create the parent of the repository
+install -d "${repo%/*}"
+
+if [ -d "$repo" ]; then
+	s6-rc-repo-sync -r "$repo"
+else
+	s6-rc-repo-init -r "$repo" $stores
+	s6-rc-set-new -r "$repo" current
 fi
 
-# Synthesize the boot bundle the way s6-rc-set-commit does: essential and
-# recommended services form the default bundle, everything else is only
-# started on demand or as a dependency.
-gensrc=$(mktemp -d)
-mkdir -p $gensrc/default/contents.d
-echo bundle > $gensrc/default/type
-for store in $stores; do
-	for svc in $store/*/; do
-		[ -f "$svc/flag-essential" ] || [ -f "$svc/flag-recommended" ] || continue
-		touch $gensrc/default/contents.d/$(basename $svc)
-	done
-done
+s6-rc-set-fix -u -r "$repo" current
+s6-rc-set-commit -r "$repo" current
 
+# Install the committed set as the boot database. s6-rc-set-install cannot be
+# used here: it updates the live database, which does not exist yet.
 rm -rf $D${sysconfdir}/s6-rc/compiled/initial
 install -d $D${sysconfdir}/s6-rc/compiled
-PSEUDO_UNLOAD=1 ${binprefix}qemuwrapper -L $D \
-    $D${bindir}/s6-rc-compile $D${sysconfdir}/s6-rc/compiled/initial $stores $gensrc
-rm -rf $gensrc
+cp -a "$repo"/compiled/current/. $D${sysconfdir}/s6-rc/compiled/initial
 chown -R root:root $D${sysconfdir}/s6-rc/compiled/initial
 ln -sf initial $D${sysconfdir}/s6-rc/compiled/current
+
+# The repository records the stores by the path it was given, so the store
+# links are the one thing in it that points into the build tree; everything
+# else is relative to the repository itself.
+for link in "$repo"/.stores:*/*; do
+	[ -L "$link" ] || continue
+	target=$(readlink "$link")
+	case "$target" in
+	"$D"/*)
+		ln -sfn "${target#$D}" "$link"
+		;;
+	esac
+done
+chown -R root:root "$repo"

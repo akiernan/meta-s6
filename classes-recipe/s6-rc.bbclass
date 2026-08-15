@@ -8,7 +8,7 @@ FILES:${PN} += "${s6_rc_sourcedir}"
 
 DEPENDS += "s6-rc execline s6-portable-utils"
 
-PACKAGE_WRITE_DEPS += "qemu-native"
+PACKAGE_WRITE_DEPS += "s6-rc-native"
 
 # On-device database updates go through the s6-rc repository: sync it
 # with the service stores (creating it on first use), then commit and
@@ -21,6 +21,7 @@ else
 	if test -d ${localstatedir}/lib/s6-rc/repository; then
 		s6-rc-repo-sync
 	else
+		mkdir -p ${localstatedir}/lib/s6-rc
 		s6-rc-repo-init ${datadir}/s6/sources ${sysconfdir}/s6/sources
 		s6-rc-set-new current
 	fi
@@ -37,6 +38,7 @@ else
 	if test -d ${localstatedir}/lib/s6-rc/repository; then
 		s6-rc-repo-sync
 	else
+		mkdir -p ${localstatedir}/lib/s6-rc
 		s6-rc-repo-init ${datadir}/s6/sources ${sysconfdir}/s6/sources
 		s6-rc-set-new current
 	fi

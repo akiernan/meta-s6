@@ -45,3 +45,20 @@ EXPORT_FUNCTIONS do_configure do_compile do_install
 
 # pkgconfig support seems to have broken these dependencies which leak into targets
 EXTRA_OEMAKE:append = " -W-lskarnet -W-ls6 -W-ls6dns -W-ls6rc -W-lexecline -W-lnsss"
+
+# Native builds are also used as cross tools: s6-rc-compile embeds paths into
+# the databases it generates, so a native build must be told where things will
+# live on the target rather than in the native sysroot. Only two path families
+# ever reach the generated artefacts - everything else is a bare command name
+# resolved through PATH, as absolute paths are disabled.
+# ${bindir} and ${libexecdir} cannot be used for this: native.bbclass points
+# them at the recipe's own sysroot, which is the leak these variables exist to
+# avoid. ${target_datadir} is the only target path bitbake.conf preserves
+# across that override - it is there, as its comment says, because cross
+# recipes need to know about the target layout - and as ${datadir} is
+# ${prefix}/share its dirname is the target's prefix. That assumes the
+# ${exec_prefix} = ${prefix} default; a distro which separates the two, or
+# which moves them anywhere unusual, should set these directly.
+SKARNET_TARGET_EXEC_PREFIX ??= "${@os.path.dirname(d.getVar('target_datadir'))}"
+SKARNET_TARGET_BINDIR ??= "${SKARNET_TARGET_EXEC_PREFIX}/bin"
+SKARNET_TARGET_LIBEXECDIR ??= "${SKARNET_TARGET_EXEC_PREFIX}/libexec"

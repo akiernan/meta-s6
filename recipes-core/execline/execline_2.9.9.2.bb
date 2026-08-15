@@ -12,6 +12,8 @@ SRC_URI[sha256sum] = "908ed4db3a6b3a23a205d8fd4cf2a71089156f2aeae0f54656045aafad
 PACKAGECONFIG ?= "multicall"
 PACKAGECONFIG[multicall] = "--enable-multicall,--disable-multicall"
 
+EXTRA_OECONF:append:class-native = " --shebangdir=${SKARNET_TARGET_BINDIR}"
+
 inherit skarnet
 
 BBCLASSEXTEND = "native"

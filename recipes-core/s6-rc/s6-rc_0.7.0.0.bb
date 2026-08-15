@@ -9,6 +9,8 @@ DEPENDS = "skalibs execline s6"
 SRC_URI = "https://skarnet.org/software/s6-rc/s6-rc-${PV}.tar.gz"
 SRC_URI[sha256sum] = "bf5b8ce0da5a4ee70d642b818b61d9916a7a9b64a457595f388113e54a188688"
 
+EXTRA_OECONF:append:class-native = " --libexecdir=${SKARNET_TARGET_LIBEXECDIR}"
+
 inherit skarnet
 
 BBCLASSEXTEND = "native"
