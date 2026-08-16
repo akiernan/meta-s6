@@ -1,0 +1,38 @@
+# SPDX-License-Identifier: MIT
+#
+# Deliberately unflagged: ulogd exits with "not even a single working plugin
+# stack" until an administrator uncomments one in /etc/ulogd.conf, so starting
+# it at boot on a stock configuration only produces a restart loop. Enable it
+# once the stacks and the ruleset that feeds them are configured.
+
+[ulogd-srv]
+type = "longrun"
+producer-for = "ulogd-log"
+run = """\
+#!/usr/bin/execlineb -P
+
+fdmove -c 2 1
+foreground { modprobe -q nfnetlink_log }
+exec -c
+ulogd -c /etc/ulogd.conf
+"""
+
+[ulogd-log]
+type = "longrun"
+consumer-for = [
+    "ulogd-srv",
+]
+dependencies = [
+    "populate-volatile",
+]
+notification-fd = 3
+pipeline-name = "ulogd-pipeline"
+run = """
+#!/usr/bin/execlineb -P
+
+s6-envuidgid root
+s6-envuidgid -g adm
+s6-applyuidgid
+exec -c
+s6-log -d3 -- t s131072 n1 /var/log/ulogd
+"""
