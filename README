@@ -94,12 +94,15 @@ database is updated at the same time, so the change survives a reboot.
 Testing under qemu
 ==================
 
-meta-s6-qemu-wrynose.conf.json and meta-s6-qemu-master.conf.json are
+meta-s6-qemu-master.conf.json and meta-s6-qemu-wrynose.conf.json are
 bitbake-setup configurations which build the layer for qemu machines
-against the wrynose release and against master respectively, using the
+against master and against the wrynose release respectively, using the
 poky distro and the Yocto Project's prebuilt sstate mirror:
 
-  bitbake-setup init https://raw.githubusercontent.com/akiernan/meta-s6/main/meta-s6-qemu-wrynose.conf.json
+  bitbake-setup init https://raw.githubusercontent.com/akiernan/meta-s6/main/meta-s6-qemu-master.conf.json
+
+Development follows master; build the wrynose configuration instead to
+check the layer against the release.
 
 Choose a configuration when prompted (or pass it on the command line):
 each qemu machine is available with either of the layer's init flavours,
