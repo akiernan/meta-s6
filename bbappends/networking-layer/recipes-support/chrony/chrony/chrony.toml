@@ -1,0 +1,34 @@
+# SPDX-License-Identifier: MIT
+
+[chronyd-srv]
+flag-recommended = true
+type = "longrun"
+producer-for = "chronyd-log"
+run = """\
+#!/usr/bin/execlineb -P
+
+fdmove -c 2 1
+exec -c
+chronyd -d -n -s
+"""
+
+[chronyd-log]
+flag-recommended = true
+type = "longrun"
+consumer-for = [
+    "chronyd-srv",
+]
+dependencies = [
+    "populate-volatile",
+]
+notification-fd = 3
+pipeline-name = "chronyd-pipeline"
+run = """
+#!/usr/bin/execlineb -P
+
+s6-envuidgid root
+s6-envuidgid -g adm
+s6-applyuidgid
+exec -c
+s6-log -d3 -- t s131072 n1 /var/log/chronyd
+"""
