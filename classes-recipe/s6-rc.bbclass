@@ -109,7 +109,9 @@ for path in Path("${D}${s6_rc_sourcedir}").glob("*.toml"):
             p = Path("${D}${s6_rc_sourcedir}").joinpath(*k)
             p.parent.mkdir(parents=True, exist_ok=True)
             if isinstance(v, bool):
-                p.open(mode="w").close()
+                # flags are tested for presence, so false means no file
+                if v:
+                    p.open(mode="w").close()
             else:
                 if isinstance(v, list):
                     v = "\n".join(v)
