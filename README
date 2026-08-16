@@ -79,6 +79,9 @@ s6-rc-set-commit produced. Installing a package which ships service
 definitions syncs the repository and installs the new set in the same
 way.
 
+docs/service-definitions.md describes the TOML format service
+definitions are written in, and how it maps onto what s6-rc reads.
+
 To change which services start at boot, work on the current set and
 install it:
 
