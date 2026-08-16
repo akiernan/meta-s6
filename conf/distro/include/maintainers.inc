@@ -1,6 +1,5 @@
 RECIPE_MAINTAINER:pn-dnsfunnel = "Alex Kiernan <alex.kiernan@gmail.com>"
 RECIPE_MAINTAINER:pn-execline = "Alex Kiernan <alex.kiernan@gmail.com>"
-RECIPE_MAINTAINER:pn-libretls = "Alex Kiernan <alex.kiernan@gmail.com>"
 RECIPE_MAINTAINER:pn-mdevd = "Alex Kiernan <alex.kiernan@gmail.com>"
 RECIPE_MAINTAINER:pn-nsss = "Alex Kiernan <alex.kiernan@gmail.com>"
 RECIPE_MAINTAINER:pn-s6 = "Alex Kiernan <alex.kiernan@gmail.com>"
