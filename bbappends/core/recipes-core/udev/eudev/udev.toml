@@ -42,7 +42,7 @@ type = "oneshot"
 up = """
 foreground
 {
-  pipeline { kmod static-nodes --format=devname --output=/proc/self/fd/1 }
+  pipeline { kmod static-nodes --format=devname }
   pipeline { s6-cut -f1 -d\" \" }
   forstdin -pd \"\\n\" -- mod
   importas -iu mod mod
