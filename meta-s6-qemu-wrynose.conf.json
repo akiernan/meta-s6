@@ -45,6 +45,17 @@
                 "rev": "main"
             },
             "path": "meta-s6"
+        },
+        "meta-openembedded": {
+            "git-remote": {
+                "remotes": {
+                    "origin": {
+                        "uri": "https://git.openembedded.org/meta-openembedded"
+                    }
+                },
+                "rev": "wrynose"
+            },
+            "path": "meta-openembedded"
         }
     },
     "bitbake-setup": {
@@ -53,6 +64,9 @@
                 "bb-layers": [
                     "openembedded-core/meta",
                     "meta-yocto/meta-poky",
+                    "meta-openembedded/meta-oe",
+                    "meta-openembedded/meta-python",
+                    "meta-openembedded/meta-networking",
                     "meta-s6"
                 ],
                 "oe-fragments": [
