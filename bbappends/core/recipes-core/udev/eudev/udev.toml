@@ -36,7 +36,6 @@ udevadm trigger --action=add --type=devices
 [init-static-devnodes]
 dependencies = [
     "mount-proc",
-#    "init-sysctl",
 ]
 type = "oneshot"
 up = """
