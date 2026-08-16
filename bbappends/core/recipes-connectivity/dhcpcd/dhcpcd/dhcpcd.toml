@@ -1,0 +1,37 @@
+# SPDX-License-Identifier: MIT
+
+[dhcpcd-srv]
+flag-recommended = true
+type = "longrun"
+dependencies = [
+    "udev-trigger",
+]
+producer-for = "dhcpcd-log"
+run = """\
+#!/usr/bin/execlineb -P
+
+fdmove -c 2 1
+exec -c
+dhcpcd -B --nosyslog
+"""
+
+[dhcpcd-log]
+flag-recommended = true
+type = "longrun"
+consumer-for = [
+    "dhcpcd-srv",
+]
+dependencies = [
+    "populate-volatile",
+]
+notification-fd = 3
+pipeline-name = "dhcpcd-pipeline"
+run = """
+#!/usr/bin/execlineb -P
+
+s6-envuidgid root
+s6-envuidgid -g adm
+s6-applyuidgid
+exec -c
+s6-log -d3 -- t s131072 n1 /var/log/dhcpcd
+"""
