@@ -84,6 +84,23 @@ python s6_rc_populate_packages () {
 
 PACKAGESPLITFUNCS += " s6_rc_populate_packages"
 
+# Service definitions to place in the store, and paths to take back out of the
+# image, named rather than installed by the recipe itself. A bbappend which
+# inherits this class conditionally contributes nothing at all when s6-rc is
+# not the service manager, whereas its own do_install:append would change the
+# appended recipe's signature whether or not the shell inside it ever ran.
+S6_RC_SERVICE_FILES ??= ""
+S6_RC_INSTALL_REMOVE ??= ""
+
+do_install:append() {
+	for f in ${S6_RC_SERVICE_FILES}; do
+		install -D -m 0644 ${UNPACKDIR}/$f ${D}${s6_rc_sourcedir}/$f
+	done
+	for p in ${S6_RC_INSTALL_REMOVE}; do
+		rm -rf ${D}$p
+	done
+}
+
 s6_rc_generate_services () {
 	nativepython3 - <<EOF
 import tomllib
