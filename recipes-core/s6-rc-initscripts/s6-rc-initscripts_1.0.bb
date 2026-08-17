@@ -51,4 +51,16 @@ do_install:append() {
 		${D}${s6_rc_sourcedir}
 }
 
-RDEPENDS:${PN} += "s6-frontend s6-linux-utils s6-portable-utils initscripts-populate-volatile s6-rc-getty-generator"
+# initscripts only splits populate-volatile.sh out for us when s6-rc is the
+# service manager, so ask for it under the same condition the split is made.
+# Resolve that here rather than inline in RDEPENDS, where inline python leaves
+# do_package with a basehash which does not survive being recomputed.
+S6_RC_POPULATE_VOLATILE := "${@bb.utils.contains('S6_LINUX_INIT_SERVICE_MANAGER', 's6-rc', 'initscripts-populate-volatile', '', d)}"
+
+RDEPENDS:${PN} += "\
+    s6-frontend \
+    s6-linux-utils \
+    s6-portable-utils \
+    s6-rc-getty-generator \
+    ${S6_RC_POPULATE_VOLATILE} \
+"
