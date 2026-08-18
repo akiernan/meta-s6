@@ -24,7 +24,7 @@ dependencies = [
     "populate-volatile",
 ]
 notification-fd = 3
-pipeline-name = "syslogd"
+pipeline-name = "syslogd-pipeline"
 run = """
 #!/usr/bin/execlineb -P
 exec -c
