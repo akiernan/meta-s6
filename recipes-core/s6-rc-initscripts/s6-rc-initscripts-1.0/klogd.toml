@@ -29,6 +29,6 @@ pipeline-name = "klogd"
 run = """
 #!/usr/bin/execlineb -P
 exec -c
-s6-log -d3 -- t s1000000 n20 /var/log/klogd
+s6-log -d3 -- t n1 /var/log/klogd
 """
 type = "longrun"

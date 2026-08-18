@@ -34,5 +34,5 @@ s6-envuidgid root
 s6-envuidgid -g adm
 s6-applyuidgid
 exec -c
-s6-log -d3 -- t s131072 n1 /var/log/wpa-supplicant
+s6-log -d3 -- t n1 /var/log/wpa-supplicant
 """

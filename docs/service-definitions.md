@@ -216,12 +216,19 @@ shebang** and may be in any language. Prefer execline:
     run = """
     #!/usr/bin/execlineb -P
 
-    s6-log -d3 -- t s131072 n1 /var/log/dbus
+    s6-log -d3 -- t n1 /var/log/dbus
     """
 
 Both halves of the pipeline are flagged: a service which runs at boot needs
 its logger to run at boot, and a set in which an active service depends on
 one that is merely usable is inconsistent.
+
+Every logger in this layer uses the same script: `t` for tai64n timestamps,
+`n1` to keep one rotated file, and s6-log's own defaults for everything else.
+`/var/log` is usually a tmpfs, so a logging directory costs the size of the
+current file plus its one archive - a little under 200K with the default
+99999 byte file size. Raise it for a service which genuinely needs the
+history, rather than everywhere.
 
 ## Prescriptions, not bundles
 
