@@ -10,6 +10,7 @@ SRC_URI = "\
     file://init-disks.toml \
     file://init-tty.toml \
     file://klogd.toml \
+    file://loopback.toml \
     file://mount-dev-hugepages.toml \
     file://mount-dev-mqueue.toml \
     file://mount-dev-pts.toml \
@@ -41,7 +42,7 @@ do_install:append() {
 
 	install -d -m 0755 ${D}${s6_rc_sourcedir}
 	install -m 0644 00.toml init-dev.toml init-disks.toml init-tty.toml klogd.toml  \
-		mount-dev-hugepages.toml mount-dev-mqueue.toml mount-dev-pts.toml  \
+		loopback.toml mount-dev-hugepages.toml mount-dev-mqueue.toml mount-dev-pts.toml  \
 		mount-proc-sys-fs-binfmt_misc.toml mount-proc.toml mount-sys-fs-bpf.toml  \
 		mount-sys-fs-cgroup.toml mount-sys-fs-fuse-connections.toml  \
 		mount-sys-fs-pstore.toml mount-sys-kernel-config.toml  \
