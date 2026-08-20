@@ -1,0 +1,50 @@
+# SPDX-License-Identifier: MIT
+
+# Recommended rather than essential: nothing in a base system needs a TEE, and
+# a machine can carry optee-client without the secure world being present or
+# willing. An administrator can turn it off, and the boot does not depend on it.
+[tee-supplicant-srv]
+flag-recommended = true
+type = "longrun"
+dependencies = [
+    "populate-volatile",
+]
+producer-for = "tee-supplicant-log"
+run = """
+#!/usr/bin/execlineb -P
+
+fdmove -c 2 1
+ifelse { eltest -e /dev/teepriv0 }
+{
+  s6-envuidgid teesuppl
+  s6-applyuidgid -U
+  exec -c
+  tee-supplicant
+}
+# No supplicant device: the secure world is absent, or its driver has not
+# arrived yet. Say so once and wait, rather than exiting straight away and
+# being restarted as fast as the supervisor can manage.
+foreground { s6-echo "tee-supplicant: no /dev/teepriv0, waiting" }
+s6-sleep 60
+"""
+
+[tee-supplicant-log]
+flag-recommended = true
+type = "longrun"
+consumer-for = [
+    "tee-supplicant-srv",
+]
+dependencies = [
+    "populate-volatile",
+]
+notification-fd = 3
+pipeline-name = "tee-supplicant-pipeline"
+run = """
+#!/usr/bin/execlineb -P
+
+s6-envuidgid root
+s6-envuidgid -g adm
+s6-applyuidgid
+exec -c
+s6-log -d3 -- t n1 /var/log/tee-supplicant
+"""
