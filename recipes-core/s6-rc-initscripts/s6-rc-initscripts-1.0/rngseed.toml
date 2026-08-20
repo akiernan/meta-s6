@@ -6,12 +6,23 @@ dependencies = [
     "00",
     "init-disks"
 ]
-up = """
-if -t { eltest -r /var/lib/rngseed/seed }
-rngseed -r
-"""
 type = "oneshot"
-down = """
+# Write a new seed at boot, not only at shutdown. rngseed -r unlinks the seed
+# as it reads it - the same bits must never seed the RNG twice - so a machine
+# that loses power before down runs comes back with no seed file at all, and
+# every later boot then has nothing to read either.
+#
+# The read stays guarded: rngseed -r is fatal when the file is absent, which
+# is the state a first boot is in, so -rw in one go is not an option.
+up = """
 if { s6-mkdir -m 0700 -p /var/lib/rngseed }
+foreground
+{
+  if -t { eltest -r /var/lib/rngseed/seed }
+  rngseed -r
+}
+rngseed -w
+"""
+down = """
 rngseed -w
 """
