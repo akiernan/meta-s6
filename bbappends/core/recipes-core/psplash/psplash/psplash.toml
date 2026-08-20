@@ -1,0 +1,48 @@
+# SPDX-License-Identifier: MIT
+
+# Deliberately unflagged. A boot splash is a choice - it wants a framebuffer,
+# it hides the console, and plenty of images want neither - so it is compiled
+# into the database and starts only when asked for, by name or as a
+# dependency of something that wants it.
+#
+# A oneshot rather than a longrun, because psplash is meant to exit: it quits
+# once anything else draws on the framebuffer, and a supervisor would read
+# that as a crash and start it again, and again.
+#
+# /mnt is where OE puts the fifo - oe-core's own recipe creates
+# /mnt/psplash_fifo and its rcS exports PSPLASH_FIFO_DIR=/mnt. Anything
+# calling psplash-write later needs that in its environment too; there is no
+# rc here to export it for the whole boot.
+[psplash]
+dependencies = [
+    "mount-proc",
+]
+type = "oneshot"
+up = """
+if -t { eltest -e /dev/fb0 }
+if -n -t { redirfd -r 0 /proc/cmdline s6-grep -q -F psplash=false }
+foreground { s6-mkdir -p /mnt }
+foreground
+{
+  if -n -t { redirfd -r 0 /proc/mounts s6-grep -q -F " /mnt " }
+  s6-mount -t tmpfs -o size=40k tmpfs /mnt
+}
+# oe-core only creates the fifo when sysvinit is in DISTRO_FEATURES, and puts
+# it on the rootfs under the tmpfs just mounted over it, so make it here.
+foreground { s6-mkfifo -m 0666 /mnt/psplash_fifo }
+backtick -E -n -D 0 rotation
+{
+  if -t { eltest -r /etc/rotation }
+  redirfd -r 0 /etc/rotation
+  s6-cat
+}
+export PSPLASH_FIFO_DIR /mnt
+background { psplash --angle $rotation }
+exit 0
+"""
+down = """
+export PSPLASH_FIFO_DIR /mnt
+# it quits by itself as soon as anything else draws, so it may be long gone
+foreground { psplash-write QUIT }
+exit 0
+"""
