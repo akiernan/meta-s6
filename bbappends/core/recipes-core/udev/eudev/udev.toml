@@ -22,9 +22,14 @@ dependencies = [
 type = "oneshot"
 up = "udevadm settle"
 
+# Depends on sysctl because this is what brings network interfaces into
+# existence, and net.*.conf.default.* only reaches interfaces created after it
+# is applied. Run the other way round and those settings take on nothing, with
+# no error to say so.
 [udev-trigger]
 flag-recommended = true
 dependencies = [
+    "sysctl",
     "udev-srv",
 ]
 type = "oneshot"

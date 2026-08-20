@@ -3,13 +3,18 @@
 # The sysv boot applied these from bootmisc.sh. An s6-rc boot runs no rc
 # scripts, so without this a distro's sysctl settings are read by nothing.
 #
+# Essential, because the policy lives in the files rather than here: the lever
+# for "I do not want this setting" is editing /etc/sysctl.d, not masking the
+# thing that reads it, which would leave the files silently ignored. It always
+# exits 0, so it cannot fail a boot, and it has no down.
+#
 # Drop-ins are sorted and applied first, /etc/sysctl.conf last so it still
 # wins, which is the precedence anyone writing these files will expect.
 # Parsing is left to sysctl itself: the format has comments, globs and the
 # leading - that means "ignore a failure", and reimplementing that here
 # would only be a worse version of it.
 [sysctl]
-flag-recommended = true
+flag-essential = true
 dependencies = [
     "mount-proc",
 ]
