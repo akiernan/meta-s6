@@ -89,9 +89,9 @@ becomes the contents:
 
 `env` and `data` are the only subdirectories s6-rc copies verbatim into the
 generated service directory, so anything the service needs to read at runtime
-belongs in one of them. Nothing applies `env` for you - s6-supervise does not
-- so the run script has to, and because the script's working directory is the
-service directory it can name it directly:
+belongs in one of them. Nothing applies `env` for you - s6-supervise does
+not - so the run script has to, and because the script's working directory
+is the service directory it can name it directly:
 
     run = """
     #!/usr/bin/execlineb -P
