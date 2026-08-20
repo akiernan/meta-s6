@@ -29,6 +29,7 @@ SRC_URI = "\
     file://populate-volatile.toml \
     file://rngseed.toml \
     file://set-date.toml \
+    file://sysctl.toml \
     file://syslogd.toml \
 "
 
@@ -48,7 +49,8 @@ do_install:append() {
 		mount-sys-fs-pstore.toml mount-sys-kernel-config.toml  \
 		mount-sys-kernel-debug.toml mount-sys-kernel-tracing.toml mount-sys.toml  \
 		mount-tmp.toml mount-var-volatile.toml  \
-		populate-volatile.toml rngseed.toml set-date.toml syslogd.toml \
+		populate-volatile.toml rngseed.toml set-date.toml sysctl.toml \
+		syslogd.toml \
 		${D}${s6_rc_sourcedir}
 }
 
