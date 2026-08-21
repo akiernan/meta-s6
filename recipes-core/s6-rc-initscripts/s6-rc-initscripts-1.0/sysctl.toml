@@ -8,8 +8,19 @@
 # thing that reads it, which would leave the files silently ignored. It always
 # exits 0, so it cannot fail a boot, and it has no down.
 #
-# Drop-ins are sorted and applied first, /etc/sysctl.conf last so it still
-# wins, which is the precedence anyone writing these files will expect.
+# The directories systemd-sysctl reads, in the same order: vendor drop-ins
+# under /usr/lib, runtime ones under /run, the administrator's under /etc, and
+# /etc/sysctl.conf last of all so it still wins.
+#
+# oe-core gets that last part by packaging - procps symlinks
+# /etc/sysctl.d/99-sysctl.conf at it so it simply sorts last - but only when
+# systemd is in DISTRO_FEATURES, and only if procps is installed at all. Name
+# it here instead, and a busybox image gets it read too.
+#
+# One thing systemd does that this does not: a file in /etc/sysctl.d with the
+# same name as one under /usr/lib replaces it outright, which is how a vendor
+# drop-in is disabled with an empty file. Here the later directory only wins
+# key by key, so overriding a setting works and blanking a file does not.
 # Parsing is left to sysctl itself: the format has comments, globs and the
 # leading - that means "ignore a failure", and reimplementing that here
 # would only be a worse version of it.
@@ -20,8 +31,10 @@ dependencies = [
 ]
 type = "oneshot"
 up = """
-elglob -0 -s files /etc/sysctl.d/*.conf
-forx -o 0 f { $files /etc/sysctl.conf }
+elglob -0 -s vendor /usr/lib/sysctl.d/*.conf
+elglob -0 -s runtime /run/sysctl.d/*.conf
+elglob -0 -s admin /etc/sysctl.d/*.conf
+forx -o 0 f { $vendor $runtime $admin /etc/sysctl.conf }
 importas -u f f
 foreground
 {
