@@ -7,9 +7,8 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=bf2e714ed36534bb7976bdbae107223b"
 DEPENDS = "skalibs execline s6 s6-rc"
 
 SRC_URI = "https://skarnet.org/software/s6-frontend/s6-frontend-${PV}.tar.gz \
-           file://0001-version-export-Report-bootdb-not-the-scandir.patch \
            file://s6.conf"
-SRC_URI[sha256sum] = "ed7bba6f2c13dd16ebf17fda0d482f4ba4848d80f5b4d7edd22d8b60a869f994"
+SRC_URI[sha256sum] = "4bce4e9bec8c1de9e3ee5ef764580421504a3c6303eff96997b69d1b89219536"
 
 PACKAGECONFIG ?= "s6-linux-init"
 PACKAGECONFIG[nsss] = "--enable-nsss,--disable-nsss,nsss"
