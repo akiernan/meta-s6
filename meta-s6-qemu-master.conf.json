@@ -72,7 +72,8 @@
                 "oe-fragments": [
                     "core/yocto/sstate-mirror-cdn",
                     "distro/poky",
-                    "core/yocto/root-login-with-empty-password"
+                    "core/yocto/root-login-with-empty-password",
+                    "meta-s6/testimage"
                 ],
                 "configurations": [
                     {
