@@ -7,8 +7,8 @@ dependencies = [
     "getty-srv",
 ]
 up = """
-/usr/libexec/s6-rc-getty-generator
+/usr/libexec/s6-getty-generator
 """
 down = """
-/usr/libexec/s6-rc-getty-generator stop
+/usr/libexec/s6-getty-generator stop
 """

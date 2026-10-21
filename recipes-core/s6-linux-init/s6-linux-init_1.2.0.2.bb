@@ -86,7 +86,7 @@ RDEPENDS:${PN} += "\
 "
 RDEPENDS:${PN}:append:class-target = "\
     ${PN}-common \
-    ${@ 'initscripts sysvinit-rc' if d.getVar('S6_LINUX_INIT_SERVICE_MANAGER') == 'sysvinit-rc' else ''} \
+    ${@ 'initscripts sysvinit-rc s6-getty-generator-sysvinit-rc' if d.getVar('S6_LINUX_INIT_SERVICE_MANAGER') == 'sysvinit-rc' else ''} \
     ${@ 's6-rc s6-rc-initscripts s6-frontend' if d.getVar('S6_LINUX_INIT_SERVICE_MANAGER') == 's6-rc' else ''} \
 "
 

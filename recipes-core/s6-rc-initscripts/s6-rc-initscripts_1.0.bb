@@ -64,6 +64,6 @@ RDEPENDS:${PN} += "\
     s6-frontend \
     s6-linux-utils \
     s6-portable-utils \
-    s6-rc-getty-generator \
+    s6-getty-generator-s6-rc \
     ${S6_RC_POPULATE_VOLATILE} \
 "

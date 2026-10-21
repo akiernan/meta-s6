@@ -3,7 +3,9 @@
 # of systemd's serial-getty generator: ask the kernel which consoles are
 # live (per console= on the command line) rather than baking a static
 # list into the image. The instances hang off the getty-srv instanced
-# service, so they are supervised within the s6-rc-managed tree.
+# service, so they are supervised within the s6 tree: s6-rc brings
+# getty-srv up under s6-rc, and s6-linux-init's run-image provides it
+# under sysvinit rc, which runs this as its getty-generator init script.
 
 svc=/run/service/getty-srv
 
